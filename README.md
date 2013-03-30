@@ -56,3 +56,9 @@ Crafty.e("2D")
 		console.log(frame);
 	});
 ```
+
+Misc
+----
+MIT License
+
+If you have a desire, open an issue. If you want to contribute, open a pull request against the __development__ branch.
