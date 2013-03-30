@@ -7,8 +7,8 @@ Differences from original crafty
 --------------------------------
 The **.diff file** of each version is available inside the **/diff folder**.
 
-The server uses a stripped-down version of crafty. The following features & their subfeatures are **disabled**:
-* GRAPHICS
+The server uses a __stripped-down version of crafty__. The following features & their subfeatures are **disabled**:
+* __GRAPHICS__
 	* Crafty.DrawManager
 	* Crafty.stage
 	* Crafty.DOM
@@ -17,20 +17,20 @@ The server uses a stripped-down version of crafty. The following features & thei
 	* Crafty.background
 	* Crafty.sprite
 
-* SOUND
+* __SOUND__
 	* Crafty.audio
 
-* COMPATIBILITY
+* __COMPATIBILITY__
 	* Crafty.support
 	* Crafty.mobile
 	* Crafty.device
 
-* ASSETS
+* __ASSETS__
 	* Crafty.assets
 	* Crafty.asset
 	* Crafty.loader
 
-* INPUT
+* __INPUT__
  	* Crafty.keydown
 	* Crafty.addEvent
 	* Crafty.removeEvent
