@@ -26,7 +26,6 @@ The server uses a stripped-down version of crafty. The following features & thei
 	* Crafty.device
 
 * ASSETS
-	* Crafty.toRGB
 	* Crafty.assets
 	* Crafty.asset
 	* Crafty.loader
