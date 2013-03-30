@@ -5,7 +5,7 @@ This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craf
 
 Differences from original crafty
 --------------------------------
-The .diff file of each version is available inside the /diff folder.
+The **.diff file** of each version is available inside the **/diff folder**.
 
 The server uses a stripped-down version of crafty. The following features & their subfeatures are **disabled**:
 * GRAPHICS
@@ -17,16 +17,13 @@ The server uses a stripped-down version of crafty. The following features & thei
 	* Crafty.background
 	* Crafty.sprite
 
-
 * SOUND
 	* Crafty.audio
-
 
 * COMPATIBILITY
 	* Crafty.support
 	* Crafty.mobile
 	* Crafty.device
-
 
 * ASSETS
 	* Crafty.toRGB
@@ -34,15 +31,13 @@ The server uses a stripped-down version of crafty. The following features & thei
 	* Crafty.asset
 	* Crafty.loader
 
-
 * INPUT
-	* Crafty.keydown
+ 	* Crafty.keydown
 	* Crafty.addEvent
 	* Crafty.removeEvent
 	* Crafty.touchDispatch
 	* Crafty.mouseDispatch
 	* Crafty.keyboardDispatch
-
 
 	
 Example
