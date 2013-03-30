@@ -9,39 +9,46 @@ The .diff file of each version is available inside the /diff folder.
 
 The server uses a stripped-down version of crafty. The following features & their subfeatures are **disabled**:
 * GRAPHICS
-	* Crafty.DrawManager = notSupported;
-	* Crafty.stage = notSupported;
-	* Crafty.DOM = notSupported;
-	* Crafty.canvas = notSupported;
-	* Crafty.viewport = notSupported;
-	* Crafty.background = notSupported;
-	* Crafty.sprite = notSupported;
+	* Crafty.DrawManager
+	* Crafty.stage
+	* Crafty.DOM
+	* Crafty.canvas
+	* Crafty.viewport
+	* Crafty.background
+	* Crafty.sprite
+
 
 * SOUND
-	* Crafty.audio = notSupported;
+	* Crafty.audio
+
 
 * COMPATIBILITY
-	* Crafty.support = notSupported;
-	* Crafty.mobile = notSupported;
-	* Crafty.device = notSupported;
+	* Crafty.support
+	* Crafty.mobile
+	* Crafty.device
+
 
 * ASSETS
-	* Crafty.toRGB = notSupported;
-	* Crafty.assets = notSupported;
-	* Crafty.asset = notSupported;
-	* Crafty.loader = notSupported;
+	* Crafty.toRGB
+	* Crafty.assets
+	* Crafty.asset
+	* Crafty.loader
+
 
 * INPUT
-	* Crafty.keydown = notSupported;
-	* Crafty.addEvent = notSupported;
-	* Crafty.removeEvent = notSupported;
-	* Crafty.touchDispatch = notSupported;
-	* Crafty.mouseDispatch = notSupported;
-	* Crafty.keyboardDispatch = notSupported;
+	* Crafty.keydown
+	* Crafty.addEvent
+	* Crafty.removeEvent
+	* Crafty.touchDispatch
+	* Crafty.mouseDispatch
+	* Crafty.keyboardDispatch
 
 
+	
 Example
 -------
+Save the code below as app.js and run the command `node app.js` from the current working directory.
+
 ```javascript
 //create a new crafty instance
 var Crafty = require('./libs/crafty_nodejs.js').newCrafty();
