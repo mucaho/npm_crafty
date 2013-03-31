@@ -25,8 +25,12 @@
 			console.log('Disonnected ', socket.socket.sessionid);
 		});
 		
-		//start crafty
-		//Crafty.init(400, 336);
+		//start crafty instance
+		//Crafty.init();
+		//stop crafty instance
+		//Crafty.stop();
+		
+		//trigger event over net
 		Crafty.netTrigger("Bla", "dudu");
 	};
 

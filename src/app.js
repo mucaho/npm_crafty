@@ -19,8 +19,8 @@ app.get('/libs/crafty-0.5.3_original.js', function (req, res) {
 //create a new crafty instance
 var Crafty = require('./libs/crafty_nodejs.js').newCrafty();
 
-var craftyNet = require('./libs/crafty_net_nodejs.js');
 //add net features to crafty
+var craftyNet = require('./libs/crafty_net_nodejs.js');
 craftyNet.addNet(Crafty);
 
 io.sockets.on('connection', function (socket) {
@@ -36,7 +36,10 @@ io.sockets.on('connection', function (socket) {
 
 //start crafty instance
 //Crafty.init();
+//stop crafty instance
+//Crafty.stop();
 
+//bind to events that come over net
 Crafty.netBind("Bla", function(data) {
 	console.log(data);
 });
