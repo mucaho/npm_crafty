@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="libs/crafty-0.5.3_original.js"></script>
+	<script> exports = {}; </script>
+	<script src="libs/crafty_net_nodejs.js"></script>
+  </head>
+  <body>
+	<script>
+	window.onload = function() {
+		//add net features to crafty
+		exports.addNet(Crafty);
+		
+		var socket = io.connect();
+		// add crafty routing to socket
+		exports.routeSocket(socket, Crafty);
+		
+		socket.on('connect', function () {
+			console.log('Connected ', socket.socket.sessionid);
+		});
+		socket.on('disconnect', function () {
+			console.log('Disonnected ', socket.socket.sessionid);
+		});
+		
+		//start crafty
+		//Crafty.init(400, 336);
+		Crafty.netTrigger("Bla", "dudu");
+	};
+
+	</script>
+  </body>
+</html>
