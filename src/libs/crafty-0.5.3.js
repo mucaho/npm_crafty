@@ -6229,7 +6229,6 @@ Crafty.bind("Load", function () {
     Crafty.addEvent(this, Crafty.stage.elem, "touchcancel", Crafty.touchDispatch);
     Crafty.addEvent(this, Crafty.stage.elem, "touchleave", Crafty.touchDispatch);
    });
-*/
 
 Crafty.bind("CraftyStop", function () {
 	Crafty.removeEvent(this, "keydown", Crafty.keyboardDispatch);
@@ -6251,6 +6250,7 @@ Crafty.bind("CraftyStop", function () {
 
 	Crafty.removeEvent(this, document.body, "mouseup", Crafty.detectBlur);
 });
+*/
 
 /**@
 * #Mouse
