@@ -18,7 +18,7 @@ var newCrafty = function() {
 			userAgent: ""
 	};
 	//create crafty
-	require('./crafty-0.5.3.js').createCrafty(window, navigator);
+	require('./crafty_stripped.js').createCrafty(window, navigator);
 	var Crafty = window.Crafty;
 
 	

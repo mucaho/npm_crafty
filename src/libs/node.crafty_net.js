@@ -1,3 +1,5 @@
+var exports = exports || {};
+
 exports.addNet = function(Crafty) {
 	Crafty.netTrigger = function(eventName, eventObject) {
 		Crafty.net.send(0, "NET_"+eventName, eventObject);
