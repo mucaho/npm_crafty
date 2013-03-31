@@ -3,10 +3,25 @@ npm_crafty
 
 This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craftyJS](http://craftyjs.com/).
 
-Differences from original crafty
+# Differences from original crafty
 --------------------------------
-The **.diff file** of each version is available inside the **/diff folder**.
+## Added to crafty
+Crafty.net feature is added to Crafty. It allows you to __bind & trigger events over the net__.
+The methods are analog to the default ones (they only prepend **"NET_"** to the **"EventName"**).
+```javascript
+//global events will be delivered to the other Crafty instance
+Crafty.netTrigger("EventName", eventData);
+Crafty.netBind("EventName", callback);
+Crafty.netUnbind("EventName", callback);
+//entity events will be delivered to the entity with the same ID
+var ent = Crafty.e("NetEvents"); //this component enables net events
+ent.netTrigger("EventName", eventData);
+ent.netBind("EventName", callback);
+ent.netUnbind("EventName", callback);
+```
 
+## Removed from crafty
+The **.diff file** of each version is available inside the **/diff folder**.
 The server uses a __stripped-down version of crafty__. The following features & their subfeatures are **disabled**:
 * __GRAPHICS__
 	* Crafty.DrawManager
@@ -39,8 +54,8 @@ The server uses a __stripped-down version of crafty__. The following features & 
 	* Crafty.keyboardDispatch
 
 	
-Example
--------
+# Example
+---------
 Look at the _app.js_ and _app.html_ files in the _src_ folder.
 Run the server with `node app.js` (from the appropriate working directory).
 Run the client by opening the url `localhost` with your browser (the browser will load the _html_ file).
@@ -98,13 +113,13 @@ exports.routeSocket(socket, Crafty);
 Crafty.netTrigger("Bla", "dudu");
 ```
 
-Misc
-----
+# Misc
+------
 If you have a _desire_, open an _issue_. 
 If you want to _contribute_, open a pull request against the _development branch_.
 
-MIT License
------------
+# MIT License
+-------------
 __The MIT License (MIT)__
 
 Copyright (c) 2013 mkucko@gmail.com
