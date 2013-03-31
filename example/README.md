@@ -28,8 +28,7 @@ var startSession = function(socket) {
 	Crafty.netBind("Bla", function(data) {
 		console.log(data);
 	});
-}
-});
+};
 ```
 
 __CLIENT__
