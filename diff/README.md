@@ -69,6 +69,7 @@ Automatic Filtering is not enough, so i have put together some notes what else n
 * animation.js: _-c.SpriteAnimation_
 * core.js: 
   * `Crafty.init()` -> remove line `Crafty.viewport.init();`
+  * `Crafty.stop()` -> remove whole `if (Crafty.stage && ...)` block 
   * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
 * drawing.js: _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_
 

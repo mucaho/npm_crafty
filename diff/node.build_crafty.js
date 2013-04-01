@@ -35,7 +35,7 @@ var writeStream = fs.createWriteStream('crafty_stripped.js');
 var prependURL = "https://raw.github.com/craftyjs/Crafty/master/src/";
 var appendURL = ".js";
 
-var HEADER = "exports.createCrafty = function(window, navigator) {\n";
+var HEADER = "exports.createCrafty = function(window) {\n";
 var FOOTER = "\n};\n";
   
 var readStream;

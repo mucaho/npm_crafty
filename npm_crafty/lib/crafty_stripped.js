@@ -6,7 +6,7 @@
 * Dual licensed under the MIT or GPL licenses.
 */
 
-exports.createCrafty = function(window, navigator) {
+exports.createCrafty = function(window) {
 (function (window, initComponents, undefined) {
     /**@
     * #Crafty
@@ -800,11 +800,6 @@ exports.createCrafty = function(window, navigator) {
         stop: function (clearState) {
         	this.timer.stop();
         	if (clearState) {
-        		if (Crafty.stage && Crafty.stage.elem.parentNode) {
-        			var newCrStage = document.createElement('div');
-        			newCrStage.id = "cr-stage";
-        			Crafty.stage.elem.parentNode.replaceChild(newCrStage, Crafty.stage.elem);
-        		}
         		initState();
         		initComponents(Crafty, window, window.document);
         	}
