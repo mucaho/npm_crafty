@@ -71,7 +71,7 @@ Automatic Filtering is not enough, so i have put together some notes what else n
   * `Crafty.init()` -> remove line `Crafty.viewport.init();`
   * `Crafty.stop()` -> remove whole `if (Crafty.stage && ...)` block 
   * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
-* drawing.js: _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_
+* drawing.js: _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_ (everything but _Crafty.scene_)
 
 **Things to consider in the future**
 * controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
