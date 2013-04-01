@@ -1,11 +1,3 @@
-/*!
-* Crafty v0.5.3
-* http://craftyjs.com
-*
-* Copyright 2010, Louis Stowasser
-* Dual licensed under the MIT or GPL licenses.
-*/
-
 exports.createCrafty = function(window, navigator) {
 (function (window, initComponents, undefined) {
     /**@
@@ -763,6 +755,8 @@ exports.createCrafty = function(window, navigator) {
         * @see Crafty.stop,  Crafty.viewport
         */
         init: function (w, h) {
+            Crafty.viewport.init(w, h);
+
             //call all arbitrary functions attached to onload
             this.trigger("Load");
             this.timer.init();
@@ -919,6 +913,7 @@ exports.createCrafty = function(window, navigator) {
             * Advances the game by triggering `EnterFrame` and calls `Crafty.DrawManager.draw` to update the stage.
             */
             step: function () {
+                loops = 0;
                 this.currentTime = +new Date();
                 if (this.currentTime - nextGameTick > 60 * milliSecPerFrame) {
                     nextGameTick = this.currentTime - milliSecPerFrame;
@@ -926,6 +921,10 @@ exports.createCrafty = function(window, navigator) {
                 while (this.currentTime > nextGameTick) {
                     Crafty.trigger("EnterFrame", { frame: frame++ });
                     nextGameTick += milliSecPerFrame;
+                    loops++;
+                }
+                if (loops) {
+                    Crafty.DrawManager.draw();
                 }
                if(this.currentTime > this.frameTime){
                     Crafty.trigger("MessureFPS",{value:this.frame});
@@ -957,6 +956,7 @@ exports.createCrafty = function(window, navigator) {
                 while (frames-- > 0) {
                     Crafty.trigger("EnterFrame", { frame: frame++ });
                 }
+                Crafty.DrawManager.draw();
             }
 
         },
@@ -3146,8 +3146,254 @@ Crafty.c("Collision", {
 			}
 		});
 	}
-});
+});/**@
+* #SpriteAnimation
+* @category Animation
+* @trigger AnimationEnd - When the animation finishes - { reel }
+* @trigger Change - On each frame
+*
+* Used to animate sprites by changing the sprites in the sprite map.
+*
+*/
+Crafty.c("SpriteAnimation", {
+/**@
+	* #._reels
+	* @comp SpriteAnimation
+	*
+	* A map consists of arrays that contains the coordinates of each frame within the sprite, e.g.,
+    * `{"walk_left":[[96,48],[112,48],[128,48]]}`
+	*/
+	_reels: null,
+	_frame: null,
 
+	/**@
+	* #._currentReelId
+	* @comp SpriteAnimation
+	*
+	* The current playing reel (one element of `this._reels`). It is `null` if no reel is playing.
+	*/
+	_currentReelId: null,
+
+	init: function () {
+		this._reels = {};
+	},
+
+	/**@
+	* #.animate
+	* @comp SpriteAnimation
+	* @sign public this .animate(String reelId, Number fromX, Number y, Number toX)
+	* @param reelId - ID of the animation reel being created
+	* @param fromX - Starting `x` position (in the unit of sprite horizontal size) on the sprite map
+	* @param y - `y` position on the sprite map (in the unit of sprite vertical size). Remains constant through the animation.
+	* @param toX - End `x` position on the sprite map (in the unit of sprite horizontal size)
+	* @sign public this .animate(String reelId, Array frames)
+	* @param reelId - ID of the animation reel being created
+	* @param frames - Array of arrays containing the `x` and `y` values: [[x1,y1],[x2,y2],...]
+	* @sign public this .animate(String reelId, Number duration[, Number repeatCount])
+	* @param reelId - ID of the animation reel to play
+	* @param duration - Play the animation within a duration (in frames)
+	* @param repeatCount - number of times to repeat the animation. Use -1 for infinitely
+	*
+	* Method to setup animation reels or play pre-made reels. Animation works by changing the sprites over
+	* a duration. Only works for sprites built with the Crafty.sprite methods. See the Tween component for animation of 2D properties.
+	*
+	* To setup an animation reel, pass the name of the reel (used to identify the reel and play it later), and either an
+	* array of absolute sprite positions or the start x on the sprite map, the y on the sprite map and then the end x on the sprite map.
+	*
+	* To play a reel, pass the name of the reel and the duration it should play for (in frames). If you need
+	* to repeat the animation, simply pass in the amount of times the animation should repeat. To repeat
+	* forever, pass in `-1`.
+	*
+	* @example
+	* ~~~
+	* Crafty.sprite(16, "images/sprite.png", {
+	*     PlayerSprite: [0,0]
+	* });
+	*
+	* Crafty.e("2D, DOM, SpriteAnimation, PlayerSprite")
+	*     .animate('PlayerRunning', 0, 0, 3) //setup animation
+	*     .animate('PlayerRunning', 15, -1) // start animation
+	*
+	* Crafty.e("2D, DOM, SpriteAnimation, PlayerSprite")
+	*     .animate('PlayerRunning', 0, 3, 0) //setup animation
+	*     .animate('PlayerRunning', 15, -1) // start animation
+	* ~~~
+	*
+	* @see crafty.sprite
+	*/
+	animate: function (reelId, fromx, y, tox) {
+		var reel, i, tile, tileh, duration, pos;
+
+		//play a reel
+		//.animate('PlayerRunning', 15, -1) // start animation
+		if (arguments.length < 4 && typeof fromx === "number") {
+			duration = fromx;
+
+			//make sure not currently animating
+			this._currentReelId = reelId;
+
+			currentReel = this._reels[reelId];
+
+			this._frame = {
+				currentReel: currentReel,
+				numberOfFramesBetweenSlides: Math.ceil(duration / currentReel.length),
+				currentSlideNumber: 0,
+				frameNumberBetweenSlides: 0,
+				repeat: 0
+			};
+			if (arguments.length === 3 && typeof y === "number") {
+				//User provided repetition count
+				if (y === -1) this._frame.repeatInfinitly = true;
+				else this._frame.repeat = y;
+			}
+
+			pos = this._frame.currentReel[0];
+			this.__coord[0] = pos[0];
+			this.__coord[1] = pos[1];
+
+			this.bind("EnterFrame", this.updateSprite);
+			return this;
+		}
+		// .animate('PlayerRunning', 0, 0, 3) //setup animation
+		if (typeof fromx === "number") {
+			// Defind in Sprite component.
+			tile = this.__tile + parseInt(this.__padding[0] || 0, 10);
+			tileh = this.__tileh + parseInt(this.__padding[1] || 0, 10);
+
+			reel = [];
+			i = fromx;
+			if (tox > fromx) {
+				for (; i <= tox; i++) {
+					reel.push([i * tile, y * tileh]);
+				}
+			} else {
+				for (; i >= tox; i--) {
+					reel.push([i * tile, y * tileh]);
+				}
+			}
+
+			this._reels[reelId] = reel;
+		} else if (typeof fromx === "object") {
+			// @sign public this .animate(reelId, [[x1,y1],[x2,y2],...])
+			i = 0;
+			reel = [];
+			tox = fromx.length - 1;
+			tile = this.__tile + parseInt(this.__padding[0] || 0, 10);
+			tileh = this.__tileh + parseInt(this.__padding[1] || 0, 10);
+
+			for (; i <= tox; i++) {
+				pos = fromx[i];
+				reel.push([pos[0] * tile, pos[1] * tileh]);
+			}
+
+			this._reels[reelId] = reel;
+		}
+
+		return this;
+	},
+
+	/**@
+	* #.updateSprite
+	* @comp SpriteAnimation
+	* @sign private void .updateSprite()
+	*
+	* This is called at every `EnterFrame` event when `.animate()` enables animation. It update the SpriteAnimation component when the slide in the sprite should be updated.
+	*
+	* @example
+	* ~~~
+	* this.bind("EnterFrame", this.updateSprite);
+	* ~~~
+	*
+	* @see crafty.sprite
+	*/
+	updateSprite: function () {
+		var data = this._frame;
+		if (!data) {
+			return;
+		}
+
+		if (this._frame.frameNumberBetweenSlides++ === data.numberOfFramesBetweenSlides) {
+			var pos = data.currentReel[data.currentSlideNumber++];
+
+			this.__coord[0] = pos[0];
+			this.__coord[1] = pos[1];
+			this._frame.frameNumberBetweenSlides = 0;
+		}
+
+
+		if (data.currentSlideNumber === data.currentReel.length) {
+			
+			if (this._frame.repeatInfinitly === true || this._frame.repeat > 0) {
+				if (this._frame.repeat) this._frame.repeat--;
+				this._frame.frameNumberBetweenSlides = 0;
+				this._frame.currentSlideNumber = 0;
+			} else {
+				if (this._frame.frameNumberBetweenSlides === data.numberOfFramesBetweenSlides) {
+				    this.trigger("AnimationEnd", { reel: data.currentReel });
+				    this.stop();
+				    return;
+                }
+			}
+
+		}
+
+		this.trigger("Change");
+	},
+
+	/**@
+	* #.stop
+	* @comp SpriteAnimation
+	* @sign public this .stop(void)
+	*
+	* Stop any animation currently playing.
+	*/
+	stop: function () {
+		this.unbind("EnterFrame", this.updateSprite);
+		this.unbind("AnimationEnd");
+		this._currentReelId = null;
+		this._frame = null;
+
+		return this;
+	},
+
+	/**@
+	* #.reset
+	* @comp SpriteAnimation
+	* @sign public this .reset(void)
+	*
+	* Method will reset the entities sprite to its original.
+	*/
+	reset: function () {
+		if (!this._frame) return this;
+
+		var co = this._frame.currentReel[0];
+		this.__coord[0] = co[0];
+		this.__coord[1] = co[1];
+		this.stop();
+
+		return this;
+	},
+
+	/**@
+	* #.isPlaying
+	* @comp SpriteAnimation
+	* @sign public Boolean .isPlaying([String reelId])
+	* @param reelId - Determine if the animation reel with this reelId is playing.
+	*
+	* Determines if an animation is currently playing. If a reel is passed, it will determine
+	* if the passed reel is playing.
+	*
+	* @example
+	* ~~~
+	* myEntity.isPlaying() //is any animation playing
+	* myEntity.isPlaying('PlayerRunning') //is the PlayerRunning animation playing
+	* ~~~
+	*/
+	isPlaying: function (reelId) {
+		if (!reelId) return !!this._currentReelId;
+		return this._currentReelId === reelId;
+	}
+});
 
 /**@
 * #Tween
@@ -3235,6 +3481,205 @@ function tweenEnterFrame(e) {
 	}
 }
 
+/**@
+* #Color
+* @category Graphics
+* Draw a solid color for the entity
+*/
+Crafty.c("Color", {
+	_color: "",
+	ready: true,
+
+	init: function () {
+		this.bind("Draw", function (e) {
+			if (e.type === "DOM") {
+				e.style.background = this._color;
+				e.style.lineHeight = 0;
+			} else if (e.type === "canvas") {
+				if (this._color) e.ctx.fillStyle = this._color;
+				e.ctx.fillRect(e.pos._x, e.pos._y, e.pos._w, e.pos._h);
+			}
+		});
+	},
+
+	/**@
+	* #.color
+	* @comp Color
+	* @trigger Change - when the color changes
+	* @sign public this .color(String color)
+	* @sign public String .color()
+	* @param color - Color of the rectangle
+	* Will create a rectangle of solid color for the entity, or return the color if no argument is given.
+	*
+	* The argument must be a color readable depending on which browser you
+	* choose to support. IE 8 and below doesn't support the rgb() syntax.
+	* 
+	* @example
+	* ~~~
+	* Crafty.e("2D, DOM, Color")
+	*    .color("#969696");
+	* ~~~
+	*/
+	color: function (color) {
+		if (!color) return this._color;
+		this._color = color;
+		this.trigger("Change");
+		return this;
+	}
+});
+
+/**@
+* #Tint
+* @category Graphics
+* Similar to Color by adding an overlay of semi-transparent color.
+*
+* *Note: Currently only works for Canvas*
+*/
+Crafty.c("Tint", {
+	_color: null,
+	_strength: 1.0,
+
+	init: function () {
+		var draw = function d(e) {
+			var context = e.ctx || Crafty.canvas.context;
+
+			context.fillStyle = this._color || "rgb(0,0,0)";
+			context.fillRect(e.pos._x, e.pos._y, e.pos._w, e.pos._h);
+		};
+
+		this.bind("Draw", draw).bind("RemoveComponent", function (id) {
+			if (id === "Tint") this.unbind("Draw", draw);
+		});
+	},
+
+	/**@
+	* #.tint
+	* @comp Tint
+	* @trigger Change - when the tint is applied
+	* @sign public this .tint(String color, Number strength)
+	* @param color - The color in hexadecimal
+	* @param strength - Level of opacity
+	* 
+	* Modify the color and level opacity to give a tint on the entity.
+	* 
+	* @example
+	* ~~~
+	* Crafty.e("2D, Canvas, Tint")
+	*    .tint("#969696", 0.3);
+	* ~~~
+	*/
+	tint: function (color, strength) {
+		this._strength = strength;
+		this._color = Crafty.toRGB(color, this._strength);
+
+		this.trigger("Change");
+		return this;
+	}
+});
+
+/**@
+* #Image
+* @category Graphics
+* Draw an image with or without repeating (tiling).
+*/
+Crafty.c("Image", {
+	_repeat: "repeat",
+	ready: false,
+
+	init: function () {
+		var draw = function (e) {
+			if (e.type === "canvas") {
+				//skip if no image
+				if (!this.ready || !this._pattern) return;
+
+				var context = e.ctx;
+				
+				context.fillStyle = this._pattern;
+				
+				context.save();
+				context.translate(e.pos._x, e.pos._y);
+				context.fillRect(0, 0, this._w, this._h);
+				context.restore();
+			} else if (e.type === "DOM") {
+				if (this.__image)
+					e.style.background = "url(" + this.__image + ") " + this._repeat;
+			}
+		};
+
+		this.bind("Draw", draw).bind("RemoveComponent", function (id) {
+			if (id === "Image") this.unbind("Draw", draw);
+		});
+	},
+
+	/**@
+	* #.image
+	* @comp Image
+	* @trigger Change - when the image is loaded
+	* @sign public this .image(String url[, String repeat])
+	* @param url - URL of the image
+	* @param repeat - If the image should be repeated to fill the entity.
+	* 
+	* Draw specified image. Repeat follows CSS syntax (`"no-repeat", "repeat", "repeat-x", "repeat-y"`);
+	*
+	* *Note: Default repeat is `no-repeat` which is different to standard DOM (which is `repeat`)*
+	*
+	* If the width and height are `0` and repeat is set to `no-repeat` the width and
+	* height will automatically assume that of the image. This is an
+	* easy way to create an image without needing sprites.
+	* 
+	* @example
+	* Will default to no-repeat. Entity width and height will be set to the images width and height
+	* ~~~
+	* var ent = Crafty.e("2D, DOM, Image").image("myimage.png");
+	* ~~~
+	* Create a repeating background.
+	* ~~~
+	* var bg = Crafty.e("2D, DOM, Image")
+	*              .attr({w: Crafty.viewport.width, h: Crafty.viewport.height})
+	*              .image("bg.png", "repeat");
+	* ~~~
+	* 
+	* @see Crafty.sprite
+	*/
+	image: function (url, repeat) {
+		this.__image = url;
+		this._repeat = repeat || "no-repeat";
+
+		this.img = Crafty.asset(url);
+		if (!this.img) {
+			this.img = new Image();
+			Crafty.asset(url, this.img);
+			this.img.src = url;
+			var self = this;
+
+			this.img.onload = function () {
+				if (self.has("Canvas")) self._pattern = Crafty.canvas.context.createPattern(self.img, self._repeat);
+				self.ready = true;
+
+				if (self._repeat === "no-repeat") {
+					self.w = self.img.width;
+					self.h = self.img.height;
+				}
+
+				self.trigger("Change");
+			};
+
+			return this;
+		} else {
+			this.ready = true;
+			if (this.has("Canvas")) this._pattern = Crafty.canvas.context.createPattern(this.img, this._repeat);
+			if (this._repeat === "no-repeat") {
+				this.w = this.img.width;
+				this.h = this.img.height;
+			}
+		}
+
+
+		this.trigger("Change");
+
+		return this;
+	}
+});
 
 Crafty.extend({
 	_scenes: [],
@@ -3327,7 +3772,497 @@ Crafty.extend({
 	}
 });
 
+var DirtyRectangles = (function() {
 
+	function x1(rect) { return rect._x; }
+	function x2(rect) { return rect._x + rect._w; }
+	function y1(rect) { return rect._y; }
+	function y2(rect) { return rect._y + rect._h; }
+
+	function intersects(a, b) {
+		return x1(a) < x2(b) && x2(a) > x1(b) && y1(a) < y2(b) && y2(a) > y1(b);
+	}
+
+	var corner_data = {};
+
+	function reset_corner_data() {
+		corner_data.x1y1 = false;
+		corner_data.x1y2 = false;
+		corner_data.x2y1 = false;
+		corner_data.x2y2 = false;
+		corner_data.count = 0;
+	}
+
+	// Return the number of corners of b that are inside a.
+	// _cornersInside stores its results in _corner_data. This is safe to do
+	// since the only recursive call in this file is in tail position.
+	function corners_inside(a, b) {
+		reset_corner_data();
+
+		// The x1, y1 corner of b.
+		if (x1(b) >= x1(a) && x1(b) <= x2(a)) {
+
+			// The x1, y1 corner of b.
+			if (y1(b) >= y1(a) && y1(b) <= y2(a)) {
+				corner_data.x1y1 = true;
+				corner_data.count++;
+			}
+			// The x1, y2 corner of b
+			if (y2(b) >= y1(a) && y2(b) <= y2(a)) {
+				corner_data.x1y2 = true;
+				corner_data.count++;
+			}
+		}
+
+		if (x2(b) >= x1(a) && x2(b) <= x2(a)) {
+			// The x2, y1 corner of b.
+			if (y1(b) >= y1(a) && y1(b) <= y2(a)) {
+				corner_data.x2y1 = true;
+				corner_data.count++;
+			}
+			// The x2, y2 corner of b
+			if (y2(b) >= y1(a) && y2(b) <= y2(a)) {
+				corner_data.x2y2 = true;
+				corner_data.count++;
+			}
+		}
+
+		return corner_data.count;
+	}
+
+	// Shrink contained so that it no longer overlaps containing.
+	// Requires:
+	//   * Exactly two corners of contained are within containing.
+	//   * _cornersInside called for containing and contained.
+	function shrink_rect(containing, contained) {
+
+		// The x1, y1 and x2, y1 corner of contained.
+		if (corner_data.x1y1 && corner_data.x2y1) {
+			contained._h -= y2(containing) - y1(contained);
+			contained._y = y2(containing);
+			return;
+		}
+
+		// The x1, y1 and x1, y2 corner of contained.
+		if (corner_data.x1y1 && corner_data.x1y2) {
+			contained._w -= x2(containing) - x1(contained);
+			contained._x = x2(containing);
+			return;
+		}
+
+		// The x1, y2 and x2, y2 corner of contained.
+		if (corner_data.x1y2 && corner_data.x2y2) {
+			contained._h = y1(containing) - y1(contained);
+			return;
+		}
+
+		// The x2, y1 and x2, y2 corner of contained.
+		if (corner_data.x2y1 && corner_data.x2y2) {
+			contained._w = x1(containing) - x1(contained);
+			return;
+		}
+
+	}
+
+	// Enlarge `a` such that it covers `b` as well.
+	function merge_into(a, b) {
+		var newX2 = Math.max(x2(a), x2(b));
+		var newY2 = Math.max(y2(a), y2(b));
+
+		a._x = Math.min(a._x, b._x);
+		a._y = Math.min(a._y, b._y);
+
+		a._w = newX2 - a._x;
+		a._h = newY2 - a._y;
+	}
+
+	function DirtyRectangles() {
+		this.rectangles = [];
+	};
+
+	DirtyRectangles.prototype.add_rectangle = function(new_rect) {
+		var _this = this;
+
+		var indices_to_delete = [];
+
+		function delete_indices() {
+			var i, index;
+			for (i = 0; i < indices_to_delete.length; i++) {
+				index = indices_to_delete[i];
+				_this.rectangles.splice(index, 1);
+			}
+		}
+
+		var index, rect, corners, indices_to_delete;
+
+		for (index = 0; index < this.rectangles.length; index++) {
+			rect = this.rectangles[index];
+
+			if (intersects(new_rect, rect)) {
+				corners = corners_inside(rect, new_rect);
+				switch (corners) {
+					case 4:
+						// If 4 corners of new_rect lie within rect, we can discard
+						// new_rect.  We shouldn't have found any rectangles to delete,
+						// because if a rectangle in the list is contained within
+						// new_rect, and new_rect is contained with rect, then there are
+						// overlapping rectangles in the list.
+						if (indices_to_delete.length > 0)
+							console.error("Dirty rectangle bug");
+						return;
+					case 3:
+						console.error("Impossible corner count");
+						return;
+					case 2:
+						// Shrink new_rect to not overlap rect.
+						shrink_rect(rect, new_rect);
+						break;
+					case 1:
+						corners = corners_inside(new_rect, rect);
+						switch (corners) {
+							case 1:
+								// Merge the two rectangles.
+								merge_into(rect, new_rect);
+								// TODO: Must remove rect and re-insert it.
+								indices_to_delete.unshift(index);
+								delete_indices();
+								_this.add_rectangle(rect);
+								return;
+							case 2:
+								// This case looks like this:
+								// +--------+=========+----------+
+								// |rect    |         |          |
+								// |        |         |          |
+								// +--------+---------+ new_rect |
+								//          +--------------------+
+								// Note how new_rect has 1 corner in rect, while
+								// rect has 2 corners in new_rect.
+								//
+								// Obviously, we shrink rect to not overlap new_rect.
+								shrink_rect(new_rect, rect);
+								break;
+							case 4:
+								// This case occurs when new_rect and rect have 1 corner in common,
+								// but rect lies entirely within new_rect.
+								// We delete rect, since new_rect encompasses it, and continue with
+								// insertion normally.
+								indices_to_delete.unshift(index);
+								break;
+							default:
+								console.error("Dirty rectangle bug");
+						}
+						break;
+					case 0:
+						// No corners of new_rect are inside rect. Instead, see how many
+						// corners of rect are inside new_rect
+						corners = corners_inside(new_rect, rect);
+						switch (corners) {
+							case 4:
+								// Delete rect, continue with insertion of new_rect
+								indices_to_delete.unshift(index);
+								break;
+							case 3:
+								console.error("Impossible corner count");
+								return;
+							case 2:
+								// Shrink rect to not overlap new_rect, continue with insertion.
+								shrink_rect(new_rect, rect);
+								break;
+							case 1:
+								// This should be impossible, the earlier case of 1 corner overlapping
+								// should have been triggered.
+								console.error("Impossible corner count");
+								return;
+						}
+				}
+			}
+		}
+
+		delete_indices();
+		this.rectangles.push(new_rect);
+	};
+
+	return DirtyRectangles;
+
+})();
+
+/**@
+* #Crafty.DrawManager
+* @category Graphics
+* @sign Crafty.DrawManager
+* 
+* An internal object manage objects to be drawn and implement
+* the best method of drawing in both DOM and canvas
+*/
+Crafty.DrawManager = (function () {
+	/** array of dirty rects on screen */
+	var dirty_rects = [],
+	/** array of DOMs needed updating */
+		dom = [];
+
+	return {
+		/**@
+		* #Crafty.DrawManager.total2D
+		* @comp Crafty.DrawManager
+		* 
+		* Total number of the entities that have the `2D` component.
+		*/
+		total2D: Crafty("2D").length,
+
+		/**@
+		* #Crafty.DrawManager.onScreen
+		* @comp Crafty.DrawManager
+		* @sign public Crafty.DrawManager.onScreen(Object rect)
+		* @param rect - A rectangle with field {_x: x_val, _y: y_val, _w: w_val, _h: h_val}
+		* 
+		* Test if a rectangle is completely in viewport
+		*/
+		onScreen: function (rect) {
+			return Crafty.viewport._x + rect._x + rect._w > 0 && Crafty.viewport._y + rect._y + rect._h > 0 &&
+				   Crafty.viewport._x + rect._x < Crafty.viewport.width && Crafty.viewport._y + rect._y < Crafty.viewport.height;
+		},
+
+		/**@
+		* #Crafty.DrawManager.merge
+		* @comp Crafty.DrawManager
+		* @sign public Object Crafty.DrawManager.merge(Object set)
+		* @param set - an array of rectangular regions
+		* 
+		* Merged into non overlapping rectangular region
+		* Its an optimization for the redraw regions.
+		*/
+		merge: function (set) {
+			var dr = new DirtyRectangles();
+			for (var i = 0, new_rect; new_rect = set[i]; i++) {
+				dr.add_rectangle(new_rect);
+			}
+			return dr.rectangles;
+		},
+
+		/**@
+		* #Crafty.DrawManager.add
+		* @comp Crafty.DrawManager
+		* @sign public Crafty.DrawManager.add(old, current)
+		* @param old - Undocumented
+		* @param current - Undocumented
+		* 
+		* Calculate the bounding rect of dirty data and add to the register of dirty rectangles
+		*/
+		add: function add(old, current) {
+			if (!current) {
+				dom.push(old);
+				return;
+			}
+
+			var rect,
+				before = old._mbr || old,
+				after = current._mbr || current;
+
+			if (old === current) {
+				rect = old.mbr() || old.pos();
+			} else {
+				rect = {
+					_x: ~~Math.min(before._x, after._x),
+					_y: ~~Math.min(before._y, after._y),
+					_w: Math.max(before._w, after._w) + Math.max(before._x, after._x),
+					_h: Math.max(before._h, after._h) + Math.max(before._y, after._y)
+				};
+
+				rect._w = (rect._w - rect._x);
+				rect._h = (rect._h - rect._y);
+			}
+
+			if (rect._w === 0 || rect._h === 0 || !this.onScreen(rect)) {
+				return false;
+			}
+
+			//floor/ceil
+			rect._x = ~~rect._x;
+			rect._y = ~~rect._y;
+			rect._w = (rect._w === ~~rect._w) ? rect._w : rect._w + 1 | 0;
+			rect._h = (rect._h === ~~rect._h) ? rect._h : rect._h + 1 | 0;
+
+			//add to dirty_rects, check for merging
+			dirty_rects.push(rect);
+
+			//if it got merged
+			return true;
+		},
+
+		/**@
+		* #Crafty.DrawManager.debug
+		* @comp Crafty.DrawManager
+		* @sign public Crafty.DrawManager.debug()
+		*/
+		debug: function () {
+			console.log(dirty_rects, dom);
+		},
+
+		/**@
+		* #Crafty.DrawManager.draw
+		* @comp Crafty.DrawManager
+		* @sign public Crafty.DrawManager.draw([Object rect])
+        * @param rect - a rectangular region {_x: x_val, _y: y_val, _w: w_val, _h: h_val}
+        * ~~~
+		* - If rect is omitted, redraw within the viewport
+		* - If rect is provided, redraw within the rect
+		* ~~~
+		*/
+		drawAll: function (rect) {
+			var rect = rect || Crafty.viewport.rect(),
+				q = Crafty.map.search(rect),
+				i = 0,
+				l = q.length,
+				ctx = Crafty.canvas.context,
+				current;
+
+			ctx.clearRect(rect._x, rect._y, rect._w, rect._h);
+
+			//sort the objects by the global Z
+			q.sort(function (a, b) { return a._globalZ - b._globalZ; });
+			for (; i < l; i++) {
+				current = q[i];
+				if (current._visible && current.__c.Canvas) {
+					current.draw();
+					current._changed = false;
+				}
+			}
+		},
+
+		/**@
+		* #Crafty.DrawManager.boundingRect
+		* @comp Crafty.DrawManager
+		* @sign public Crafty.DrawManager.boundingRect(set)
+		* @param set - Undocumented
+		* ~~~
+		* - Calculate the common bounding rect of multiple canvas entities.
+		* - Returns coords
+		* ~~~
+		*/
+		boundingRect: function (set) {
+			if (!set || !set.length) return;
+			var newset = [], i = 1,
+			l = set.length, current, master = set[0], tmp;
+			master = [master._x, master._y, master._x + master._w, master._y + master._h];
+			while (i < l) {
+				current = set[i];
+				tmp = [current._x, current._y, current._x + current._w, current._y + current._h];
+				if (tmp[0] < master[0]) master[0] = tmp[0];
+				if (tmp[1] < master[1]) master[1] = tmp[1];
+				if (tmp[2] > master[2]) master[2] = tmp[2];
+				if (tmp[3] > master[3]) master[3] = tmp[3];
+				i++;
+			}
+			tmp = master;
+			master = { _x: tmp[0], _y: tmp[1], _w: tmp[2] - tmp[0], _h: tmp[3] - tmp[1] };
+
+			return master;
+		},
+
+		/**@
+		* #Crafty.DrawManager.draw
+		* @comp Crafty.DrawManager
+		* @sign public Crafty.DrawManager.draw()
+		* ~~~
+		* - If the number of rects is over 60% of the total number of objects
+		*	do the naive method redrawing `Crafty.DrawManager.drawAll`
+		* - Otherwise, clear the dirty regions, and redraw entities overlapping the dirty regions.
+		* ~~~
+		* 
+        * @see Canvas.draw, DOM.draw
+		*/
+		draw: function draw() {
+			//if nothing in dirty_rects, stop
+			if (!dirty_rects.length && !dom.length) return;
+
+			var i = 0, l = dirty_rects.length, k = dom.length, rect, q,
+				j, len, dupes, obj, ent, objs = [], ctx = Crafty.canvas.context;
+
+			//loop over all DOM elements needing updating
+			for (; i < k; ++i) {
+				dom[i].draw()._changed = false;
+			}
+			//reset DOM array
+            dom.length = 0;
+			//again, stop if nothing in dirty_rects
+			if (!l) { return; }
+
+			//if the amount of rects is over 60% of the total objects
+			//do the naive method redrawing
+			if (l / this.total2D > 0.6) {
+				this.drawAll();
+				dirty_rects.length = 0;
+				return;
+			}
+
+			dirty_rects = this.merge(dirty_rects);
+			for (i = 0; i < l; ++i) { //loop over every dirty rect
+				rect = dirty_rects[i];
+				if (!rect) continue;
+				q = Crafty.map.search(rect, false); //search for ents under dirty rect
+
+				dupes = {};
+
+				//loop over found objects removing dupes and adding to obj array
+				for (j = 0, len = q.length; j < len; ++j) {
+					obj = q[j];
+
+					if (dupes[obj[0]] || !obj._visible || !obj.__c.Canvas)
+						continue;
+					dupes[obj[0]] = true;
+
+					objs.push({ obj: obj, rect: rect });
+				}
+
+				//clear the rect from the main canvas
+				ctx.clearRect(rect._x, rect._y, rect._w, rect._h);
+
+			}
+
+			//sort the objects by the global Z
+			objs.sort(function (a, b) { return a.obj._globalZ - b.obj._globalZ; });
+			if (!objs.length){ return; }
+
+			//loop over the objects
+			for (i = 0, l = objs.length; i < l; ++i) {
+				obj = objs[i];
+				rect = obj.rect;
+				ent = obj.obj;
+
+				var area = ent._mbr || ent,
+					x = (rect._x - area._x <= 0) ? 0 : ~~(rect._x - area._x),
+					y = (rect._y - area._y < 0) ? 0 : ~~(rect._y - area._y),
+					w = ~~Math.min(area._w - x, rect._w - (area._x - rect._x), rect._w, area._w),
+					h = ~~Math.min(area._h - y, rect._h - (area._y - rect._y), rect._h, area._h);
+
+				//no point drawing with no width or height
+				if (h === 0 || w === 0) continue;
+
+				ctx.save();
+				ctx.beginPath();
+				ctx.moveTo(rect._x, rect._y);
+				ctx.lineTo(rect._x + rect._w, rect._y);
+				ctx.lineTo(rect._x + rect._w, rect._h + rect._y);
+				ctx.lineTo(rect._x, rect._h + rect._y);
+				ctx.lineTo(rect._x, rect._y);
+
+				ctx.clip();
+
+				ent.draw();
+				ctx.closePath();
+				ctx.restore();
+
+				//allow entity to re-dirty_rects
+				ent._changed = false;
+			}
+
+			//empty dirty_rects
+			dirty_rects.length = 0;
+			//all merged IDs are now invalid
+			merged = {};
+		}
+	};
+})();
 Crafty.extend({
 /**@
 * #Crafty.isometric
