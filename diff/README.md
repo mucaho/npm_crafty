@@ -1,7 +1,7 @@
 # Differences from original crafty
---------------------------------
+----------------------------------
 ## Added to crafty
-------------------
+==================
 Crafty.net feature is added to Crafty. It allows you to __bind & trigger events over the net__.
 The methods are analog to the default ones (they only prepend **"NET_"** to the **"EventName"**).
 ```javascript
@@ -18,11 +18,10 @@ ent.netUnbind("EventName", callback);
 ```
 
 ## Removed from crafty
-----------------------
+==================
 The server uses a __stripped-down version of crafty__.
 
 ### Automatic Filtering
------------------------
 First files are automatically fetched from crafty's github page and written to a file. `node node.build-crafty.js`
 
 The order in which they are written is defined in [original crafty build file]
@@ -64,14 +63,13 @@ gets included and what doesn't.
 * text
 
 ### Manual Filtering
------------------------
 Automatic Filtering is not enough, so i have put together some notes what else needs to be changed.
 
 **Removal of lines, components and Crafty namespace**
 * animation.js: _-c.SpriteAnimation_
 * core.js: 
-** `Crafty.init()` -> remove line `Crafty.viewport.init();`
-** `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
+  * `Crafty.init()` -> remove line `Crafty.viewport.init();`
+  * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
 * drawing.js: _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_
 
 **Things to consider in the future**
