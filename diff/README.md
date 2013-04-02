@@ -81,11 +81,14 @@ Automatic Filtering is not enough, so i have put together some notes what else n
   * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
 * drawing.js: 
   * remove everything but __Crafty.scene__
+    * remove _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_
   * `Crafty.scene()` -> remove line `Crafty.viewport.reset();`
 * controls.js:
   * remove everything but __Multiway, Fourway, Twoway__
-  * `Multiway` -> remove whole `/*Apply movement if key is down when created*/ for(;;;){}` block
-  * `Twoway` -> change 
+    * remove -c.Keyboard, -c.Draggable, -c.Mouse, -Crafty.bind("Load", ...); -Crafty.bind("CraftyStop", ...);
+-Crafty.detectBlur, -Crafty.mouseDispatch, -Crafty.touchDispatch, -Crafty.keyboardDispatch
+  * `Multiway.multiway()` -> remove whole `/*Apply movement if key is down when created*/ for(;;;){}` block
+  * `Twoway.twoway()` -> change 
 
 ```javascript
 .bind("KeyDown", function () {
@@ -100,6 +103,8 @@ to
 });
 ```
 * extensions.js: remove everything but __Crafty.keys__ & __Crafty.mouseButtons__
+  * remove -Crafty.sprite, -Crafty.addEvent, -Crafty.removeEvent, -Crafty.background, -Crafty.viewport, 
+-c.viewport, -Crafty.support
 
 **Things to consider in the future**
   * controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
