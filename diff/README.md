@@ -18,7 +18,7 @@ ent.netUnbind("EventName", callback);
 ```
 
 ## Removed from crafty
-==================
+======================
 The server uses a __stripped-down version of crafty__.
 
 ### Automatic Filtering
@@ -34,11 +34,9 @@ gets included and what doesn't.
 * 2D
 * HashMap
 * animate
-* animation
 * collision
 * core
 * diamondiso
-* drawing
 * fps
 * import
 * intro
@@ -46,13 +44,16 @@ gets included and what doesn't.
 * math
 * outro
 * time
+* __stuff that will be heavily filtered manually:__
+  * animation
+  * drawing
+  * controls
+  * extensions
 
 **Stuff that doesnt get included:**
 * DOM
 * canvas
-* controls
 * device
-* extensions
 * hitbox
 * html
 * loader
@@ -79,9 +80,25 @@ Automatic Filtering is not enough, so i have put together some notes what else n
   * `Crafty.stop()` -> remove whole `if (Crafty.stage && ...)` block 
   * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
 * drawing.js: 
-  * _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_ (everything but _Crafty.scene_)
+  * remove everything but _Crafty.scene_
   * `Crafty.scene()` -> remove line `Crafty.viewport.reset();`
+* controls.js:
+  * remove everything but __c.Multiway, c.Fourway, c.Twoway__
+  * `Multiway` -> remove whole `/*Apply movement if key is down when created*/ for(;;;){}` block
+  * Twoway -> change 
+`
+.bind("KeyDown", function () {
+	if (this.isDown("UP_ARROW") || this.isDown("W") || this.isDown("Z")) this._up = true;
+});
+`
+`
+.bind("KeyDown", function(e) {
+	if (e.key === Crafty.keys["UP_ARROW"] || e.key === Crafty.keys["W"] || e.key === Crafty.keys["Z"])
+		this._up = true;
+});
+`
+* extensions.js: remove everything but `Crafty.keys` & `Crafty.mouseButtons`
 
 **Things to consider in the future**
-* controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
-* extensions.js: in future preserve addEvent & removeEvent for emulating input
+  * controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
+  * extensions.js: in future preserve addEvent & removeEvent for emulating input
