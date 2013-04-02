@@ -78,8 +78,8 @@ This is an adaptation of a [basic pong game](http://craftyjs.com/tutorial/gettin
 In this basic version, one client controls both paddles. The input is send to the server. The server
 handles the game logic. The server feeds the updated game logic to the client. The client displays the entities.
 
-Note that __npm_crafty__ only handles low-level networking. In a real world example, where the server
-isnt _localhost_ you would have to predict client movement on the client locally and adjust the movement
+Note that npm_crafty only handles **low-level networking**. In a real world example, where the server
+is not __localhost__ you would have to predict client movement on the client locally and adjust the movement
 accordingly when a corrected position update of the server arrives.
 
 The relevant files are:
@@ -89,5 +89,5 @@ The relevant files are:
   * all __common features__ of entities are defined equally in both server and client
   * the client adds __input and output features__ to entites
   * the server adds __game logic__ features to entities
-  * both the client and the server communicate via __npm_crafty's net events__
+  * both the client and the server communicate via __net events__
   
