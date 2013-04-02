@@ -44,7 +44,7 @@ gets included and what doesn't.
 * math
 * outro
 * time
-* __stuff that will be heavily filtered manually:__
+* _stuff that will be heavily filtered manually:_
   * animation
   * drawing
   * controls
@@ -74,30 +74,32 @@ Automatic Filtering is not enough, so i have put together some notes what else n
 (but before starting Crafty).
 
 **Removal of lines, components and Crafty namespace**
-* animation.js: _-c.SpriteAnimation_
+* animation.js: __-c.SpriteAnimation__
 * core.js: 
   * `Crafty.init()` -> remove line `Crafty.viewport.init();`
   * `Crafty.stop()` -> remove whole `if (Crafty.stage && ...)` block 
   * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
 * drawing.js: 
-  * remove everything but _Crafty.scene_
+  * remove everything but __Crafty.scene__
   * `Crafty.scene()` -> remove line `Crafty.viewport.reset();`
 * controls.js:
   * remove everything but __c.Multiway, c.Fourway, c.Twoway__
   * `Multiway` -> remove whole `/*Apply movement if key is down when created*/ for(;;;){}` block
-  * Twoway -> change 
-`
+  * `Twoway` -> change 
+
+```javascript
 .bind("KeyDown", function () {
 	if (this.isDown("UP_ARROW") || this.isDown("W") || this.isDown("Z")) this._up = true;
 });
-`
-`
+```
+to
+```javascript
 .bind("KeyDown", function(e) {
 	if (e.key === Crafty.keys["UP_ARROW"] || e.key === Crafty.keys["W"] || e.key === Crafty.keys["Z"])
 		this._up = true;
 });
-`
-* extensions.js: remove everything but `Crafty.keys` & `Crafty.mouseButtons`
+```
+* extensions.js: remove everything but __Crafty.keys__ & __Crafty.mouseButtons__
 
 **Things to consider in the future**
   * controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
