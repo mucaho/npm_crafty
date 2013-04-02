@@ -74,7 +74,7 @@ Automatic Filtering is not enough, so i have put together some notes what else n
 (but before starting Crafty).
 
 **Removal of lines, components and Crafty namespace**
-* animation.js: __-c.SpriteAnimation__
+* animation.js: remove __SpriteAnimation__
 * core.js: 
   * `Crafty.init()` -> remove line `Crafty.viewport.init();`
   * `Crafty.stop()` -> remove whole `if (Crafty.stage && ...)` block 
@@ -83,7 +83,7 @@ Automatic Filtering is not enough, so i have put together some notes what else n
   * remove everything but __Crafty.scene__
   * `Crafty.scene()` -> remove line `Crafty.viewport.reset();`
 * controls.js:
-  * remove everything but __c.Multiway, c.Fourway, c.Twoway__
+  * remove everything but __Multiway, Fourway, Twoway__
   * `Multiway` -> remove whole `/*Apply movement if key is down when created*/ for(;;;){}` block
   * `Twoway` -> change 
 
