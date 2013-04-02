@@ -106,6 +106,5 @@ to
   * remove -Crafty.sprite, -Crafty.addEvent, -Crafty.removeEvent, -Crafty.background, -Crafty.viewport, 
 -c.viewport, -Crafty.support
 
-**Things to consider in the future**
-  * controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
-  * extensions.js: in future preserve addEvent & removeEvent for emulating input
+**Things to note**
+  * controls.js & extensions.js: __mouse-, key- and touchDispatch__ are handled by clients (see _PongBasic_ example).
