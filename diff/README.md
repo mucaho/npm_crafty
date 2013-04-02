@@ -22,7 +22,7 @@ ent.netUnbind("EventName", callback);
 The server uses a __stripped-down version of crafty__.
 
 ### Automatic Filtering
-First files are automatically fetched from crafty's github page and written to a file. `node node.build-crafty.js`
+First files are automatically fetched from crafty's github page and written to a file. `node npm_crafty.build.js`
 
 The order in which they are written is defined in [original crafty build file]
 (https://github.com/craftyjs/Crafty/blob/master/build/build-crafty.php).
