@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Test</title>
+	<script src="crafty_client.js"></script>
+	
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="npm_crafty.net.js"></script>
+	<script src="npm_crafty.js"></script>
+
+	<script src="pongBasic.game.js"></script>
+  </head>
+  <body>
+	<script>
+	window.onload = function() {
+		var socket = io.connect();
+		socket.on('connect', function () {
+			console.log('Connected ', socket.socket.sessionid);
+			
+			//create Crafty Client
+			Crafty = exports.createClient();
+			//bind to socket
+			exports.toServer(socket, Crafty);
+			
+			exports.startGame(Crafty, true);
+		});
+		socket.on('disconnect', function () {
+			console.log('Disonnected ', socket.socket.sessionid);
+		});
+	};
+	</script>
+  </body>
+</html>
