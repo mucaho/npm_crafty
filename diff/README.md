@@ -67,7 +67,7 @@ Automatic Filtering is not enough, so i have put together some notes what else n
 
 **Addition of dummy objects**
 * Provide dummy `window = { document:{} };` object to creation of Crafty instance
-* Add dummy `Crafty.support = { setter: false, defineProperty: false };` to existing Crafty instance
+* Add dummy `Crafty.support = { setter: true, defineProperty: true };` to existing Crafty instance
 (but before starting Crafty).
 
 **Removal of lines, components and Crafty namespace**
