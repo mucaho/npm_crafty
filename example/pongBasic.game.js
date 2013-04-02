@@ -83,116 +83,116 @@ exports.startGame = function(Crafty, CLIENT) {
 		entityMap["PaddleRight"] = Crafty.e("2D, NetEvents").attr({ x: 550, y: 100, w: 10, h: 100 });
 		entityMap["Ball"] = Crafty.e("2D, NetEvents").attr({ x: 300, y: 150, w: 10, h: 10 });
 	};
+	var initClient = function() {
+		entityMap["Roof"]
+			.addComponent("DOM, Color")
+			.color('rgb(0,0,0)');
+		entityMap["Floor"]
+			.addComponent("DOM, Color")
+			.color('rgb(0,0,0)');
+			
+		
+		entityMap["ScoreLeft"]
+			.attr({points: 0})
+			.addComponent("DOM, Text")
+			.text("0")
+			.netBind(EVENT_RIGHT_HIT, function() {
+				this.text(++this.points);
+			});
+		entityMap["ScoreRight"]
+			.attr({points: 0})
+			.addComponent("DOM, Text")
+			.text("0")
+			.netBind(EVENT_LEFT_HIT, function() {
+				this.text(++this.points);
+			});
+		
+		
+		entityMap["PaddleLeft"]
+			.addComponent("DOM, Color, ClientPaddle")
+			.color('rgb(255,0,0)');
+		entityMap["PaddleRight"]
+			.addComponent("DOM, Color, ClientPaddle")
+			.color('rgb(0,255,0)');
+			
+		
+		entityMap["Ball"]
+			.addComponent("DOM, Color")
+			.color('rgb(0,0,255)')
+			.netBind('Moved', function(newPos) {
+				this.x = newPos.x;
+				this.y = newPos.y;
+			});
+	};
+	var initServer = function () {
+		entityMap["Roof"]
+			.addComponent("Collidable")
+			.collidable(TYPE_BORDER, null);
+		entityMap["Floor"]
+			.addComponent("Collidable")
+			.collidable(TYPE_BORDER, null);
+			
+			
+		entityMap["ScoreLeft"]
+			.addComponent("Collidable")
+			.collidable(TYPE_SCORE, function(collider) {
+				Crafty.netTrigger(EVENT_LEFT_HIT);
+			});
+		entityMap["ScoreRight"]
+			.addComponent("Collidable")
+			.collidable(TYPE_SCORE, function(collider) {
+				Crafty.netTrigger(EVENT_RIGHT_HIT);
+			});
+		
+		
+		entityMap["PaddleLeft"]
+			.addComponent("Multiway, Collidable, ServerPaddle")
+			.multiway(4, { W: -90, S: 90 })
+			.collidable(TYPE_PADDLE, null);
+		entityMap["PaddleRight"]
+			.addComponent("Multiway, Collidable, ServerPaddle")
+			.multiway(4, { UP_ARROW: -90, DOWN_ARROW: 90})
+			.collidable(TYPE_PADDLE, null);
+
+
+		entityMap["Ball"]
+			.addComponent("Collision, Collidable, Movable")
+			.onHit('Collidable', function(collisionResults) {
+				var obj;
+				for(var i = 0; i < collisionResults.length; i++) {
+					obj = collisionResults[i].obj;
+					obj.collide(this);
+					this.collide(obj);
+				}
+			})
+			.collidable(TYPE_BALL, function(collider) {
+				var type = collider.getType();
+				if (type === TYPE_SCORE) {
+					this.movable(Crafty.math.randomInt(2, 5), Crafty.math.randomInt(2, 5));
+					this.x = 300;
+				} else if (type === TYPE_PADDLE) {
+					this._dX *= -1;
+				} else if (type === TYPE_BORDER) {
+					this._dY *= -1;
+				}
+			})
+			.movable(Crafty.math.randomInt(2, 5), Crafty.math.randomInt(2, 5))
+			.bind('Moved', function(newPos) {
+				this.netTrigger('Moved', newPos);
+			});
+	};
 	
-	if (CLIENT) {
-		Crafty.background('rgb(127,127,127)');
-
-		Crafty.scene("main", function() {
-			initCommon();
-			
-			entityMap["Roof"]
-				.addComponent("DOM, Color")
-				.color('rgb(0,0,0)');
-			entityMap["Floor"]
-				.addComponent("DOM, Color")
-				.color('rgb(0,0,0)');
-				
-			
-			entityMap["ScoreLeft"]
-				.attr({points: 0})
-				.addComponent("DOM, Text")
-				.text("0")
-				.netBind(EVENT_RIGHT_HIT, function() {
-					this.text(++this.points);
-				});
-			entityMap["ScoreRight"]
-				.attr({points: 0})
-				.addComponent("DOM, Text")
-				.text("0")
-				.netBind(EVENT_LEFT_HIT, function() {
-					this.text(++this.points);
-				});
-			
-			
-			entityMap["PaddleLeft"]
-				.addComponent("DOM, Color, ClientPaddle")
-				.color('rgb(255,0,0)');
-			entityMap["PaddleRight"]
-				.addComponent("DOM, Color, ClientPaddle")
-				.color('rgb(0,255,0)');
-				
-			
-			entityMap["Ball"]
-				.addComponent("DOM, Color")
-				.color('rgb(0,0,255)')
-				.netBind('Moved', function(newPos) {
-					this.x = newPos.x;
-					this.y = newPos.y;
-				});
-		});
-	} else {
-		Crafty.scene("main", function() {
-			initCommon();
-			
-			
-			entityMap["Roof"]
-				.addComponent("Collidable")
-				.collidable(TYPE_BORDER, null);
-			entityMap["Floor"]
-				.addComponent("Collidable")
-				.collidable(TYPE_BORDER, null);
-				
-				
-			entityMap["ScoreLeft"]
-				.addComponent("Collidable")
-				.collidable(TYPE_SCORE, function(collider) {
-					Crafty.netTrigger(EVENT_LEFT_HIT);
-				});
-			entityMap["ScoreRight"]
-				.addComponent("Collidable")
-				.collidable(TYPE_SCORE, function(collider) {
-					Crafty.netTrigger(EVENT_RIGHT_HIT);
-				});
-			
-			
-			entityMap["PaddleLeft"]
-				.addComponent("Multiway, Collidable, ServerPaddle")
-				.multiway(4, { W: -90, S: 90 })
-				.collidable(TYPE_PADDLE, null);
-			entityMap["PaddleRight"]
-				.addComponent("Multiway, Collidable, ServerPaddle")
-				.multiway(4, { UP_ARROW: -90, DOWN_ARROW: 90})
-				.collidable(TYPE_PADDLE, null);
-
-
-			entityMap["Ball"]
-				.addComponent("Collision, Collidable, Movable")
-				.onHit('Collidable', function(collisionResults) {
-					var obj;
-					for(var i = 0; i < collisionResults.length; i++) {
-						obj = collisionResults[i].obj;
-						obj.collide(this);
-						this.collide(obj);
-					}
-				})
-				.collidable(TYPE_BALL, function(collider) {
-					var type = collider.getType();
-					if (type === TYPE_SCORE) {
-						this.movable(Crafty.math.randomInt(2, 5), Crafty.math.randomInt(2, 5));
-						this.x = 300;
-					} else if (type === TYPE_PADDLE) {
-						this._dX *= -1;
-					} else if (type === TYPE_BORDER) {
-						this._dY *= -1;
-					}
-				})
-				.movable(Crafty.math.randomInt(2, 5), Crafty.math.randomInt(2, 5))
-				.bind('Moved', function(newPos) {
-					this.netTrigger('Moved', newPos);
-				});
-		});
-	}
 	
+	//define main scene
+	Crafty.scene("main", function() {
+		initCommon();
+		if (CLIENT) {
+			Crafty.background('rgb(127,127,127)');
+			initClient();
+		} else {
+			initServer();
+		}
+	});
 	//automatically play the main scene
 	Crafty.scene("main");
 }
