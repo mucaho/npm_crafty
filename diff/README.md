@@ -69,6 +69,8 @@ Automatic Filtering is not enough, so i have put together some notes what else n
 * Provide dummy `window = { document:{} };` object to creation of Crafty instance
 * Add dummy `Crafty.support = { setter: true, defineProperty: true };` to existing Crafty instance
 (but before starting Crafty).
+* Add dummy `Crafty.viewport = { _x: 0, _y: 0, width: 0, height: 0 };` to existing Crafty instance
+(but before starting Crafty).
 
 **Removal of lines, components and Crafty namespace**
 * animation.js: _-c.SpriteAnimation_
@@ -76,9 +78,10 @@ Automatic Filtering is not enough, so i have put together some notes what else n
   * `Crafty.init()` -> remove line `Crafty.viewport.init();`
   * `Crafty.stop()` -> remove whole `if (Crafty.stage && ...)` block 
   * `Crafty.timer.step()`, `Crafty.timer.simpulateFrames()` -> remove line `Crafty.DrawManager.draw();`
-* drawing.js: _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_ (everything but _Crafty.scene_)
+* drawing.js: 
+  * _-c.Color, -c.Tint, -c.Image, -Crafty.DrawManager, -DirtyRectangles_ (everything but _Crafty.scene_)
+  * `Crafty.scene()` -> remove line `Crafty.viewport.reset();`
 
 **Things to consider in the future**
 * controls.js: in future emulate the addEvent/removeEvent calls, they bind on "Load" and "CraftyStop"
 * extensions.js: in future preserve addEvent & removeEvent for emulating input
-* some existing features use Crafty.viewport's properties
