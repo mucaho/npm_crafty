@@ -22,7 +22,7 @@ ent.netUnbind("EventName", callback);
 The server uses a __stripped-down version of crafty__.
 
 ### Automatic Filtering
-First files are automatically fetched from crafty's github page and written to a file. `node node.build-crafty.js`
+First files are automatically fetched from crafty's github page and written to a file. `node npm_crafty.build.js`
 
 The order in which they are written is defined in [original crafty build file]
 (https://github.com/craftyjs/Crafty/blob/master/build/build-crafty.php).
@@ -67,7 +67,7 @@ Automatic Filtering is not enough, so i have put together some notes what else n
 
 **Addition of dummy objects**
 * Provide dummy `window = { document:{} };` object to creation of Crafty instance
-* Add dummy `Crafty.support = { setter: false, defineProperty: false };` to existing Crafty instance
+* Add dummy `Crafty.support = { setter: true, defineProperty: true };` to existing Crafty instance
 (but before starting Crafty).
 
 **Removal of lines, components and Crafty namespace**
