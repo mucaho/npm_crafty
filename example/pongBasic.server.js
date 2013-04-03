@@ -28,7 +28,7 @@ io.sockets.on('connection', function (socket) {
 
 
 
-io.set('log level', 1);
+io.set('log level', 2);
 
 app.get('/pongBasic.game.js', function (req, res) {
 	res.sendfile(__dirname + '/pongBasic.game.js');
@@ -37,13 +37,15 @@ app.get('/pongBasic.game.js', function (req, res) {
 var startSession = function(socket) {
 	//load module
 	var craftyModule = require('../lib/npm_crafty');
-	//create Crafty Server
-	Crafty = craftyModule.createServer();
+
 	//bind to socket
-	craftyModule.toClient(socket, Crafty);
-	
-	
-	var pongBasic = require('./pongBasic.game.js');
-	pongBasic.startGame(Crafty, false);
+	craftyModule.addClient(Crafty, socket);
 }
+
+//create Crafty Server
+var Crafty = require('../lib/npm_crafty').createServer("Room1", io.sockets);
+var pongBasic = require('./pongBasic.game.js');
+pongBasic.startGame(Crafty);
+
+
 	
