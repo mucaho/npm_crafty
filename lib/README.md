@@ -23,6 +23,8 @@ npm_crafty.setupDefault = function( immediateCallback, connectCallback, disconne
 /**
  * Create a crafty server instance, which will communicate with clients in the specified room.
  * Pass io.sockets as 2nd argument.
+ * 
+ * The server's machine label is set to "SERVER" (used in determining which code to execute).
  */
 npm_crafty.createServer = function( room, sockets );
 
@@ -46,7 +48,26 @@ npm_crafty.addClient = function(Crafty, socket);
 
 ```javascript
 /**
- * Setu
+ * Setup a default browser client, which will connect to the node server of the website automatically.
+ * 
+ * Each callback will be called at the appropriate times.
+ * 
+ * immediateCallback = function() ... will be called immediately
+ * connectCallback = function(socket) ... will be called when the client connects to the server
+ * disconnectCallback = function(socket) ... will be called when the client disconnects from the server
  */
-exports.setupDefault
+exports.setupDefault = function( immediateCallback, connectCallback, disconnectCallback);
+
+/**
+ * Create a crafty client instance, which will communicate with server in the specified room.
+ * (The room argument is actually not used right now and can be ommited).
+ * 
+ * The client's machine label is set to LABEL (used in determining which code to execute).
+ */
+exports.createClient = function(label, room);
+
+/**
+ * Bind the client to the specified server instance.
+ */
+exports.setServer = function(Crafty, socket);
 ```
