@@ -27,8 +27,7 @@ npm_crafty.setupDefault = function( immediateCallback, connectCallback, disconne
 npm_crafty.createServer = function( room, sockets );
 
 /**
- * Add a client to the specified server instance, thus adding the client to the room behind the instance.
- * The clients will communicate with the server in that room.
+ * Add a client to the specified server instance, thus adding the client to the server instance room.
  */
 npm_crafty.addClient = function(Crafty, socket);
 ```
