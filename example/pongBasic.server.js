@@ -26,3 +26,4 @@ craftyModule.setupDefault( function (data) { //immediate callback
 	//socket will auto leave room
 });
 
+//TODO auto manage rooms and clients;

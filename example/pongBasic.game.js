@@ -145,12 +145,18 @@ exports.startGame = function(Crafty) {
 			})
 			.define("CLIENT1", function() {
 				this.bind("KeyDown", function(e) {
-					if (e.key === Crafty.keys["W"] || e.key === Crafty.keys["S"])
+					if (e.key === Crafty.keys["W"] || e.key === Crafty.keys["S"]) {
+						if (e.originalEvent)
+							delete e.originalEvent;
 						this.netTrigger("KeyDown", e);
+					}
 				})
 				.bind("KeyUp", function(e) {
-					if (e.key === Crafty.keys["W"] || e.key === Crafty.keys["S"])
+					if (e.key === Crafty.keys["W"] || e.key === Crafty.keys["S"]) {
+						if (e.originalEvent)
+							delete e.originalEvent;
 						this.netTrigger("KeyUp", e);
+					}
 				})
 			})
 			.define("SERVER", function() {
@@ -173,12 +179,18 @@ exports.startGame = function(Crafty) {
 			})
 			.define("CLIENT2", function() {
 				this.bind("KeyDown", function(e) {
-					if (e.key === Crafty.keys["UP_ARROW"] || e.key === Crafty.keys["DOWN_ARROW"])
+					if (e.key === Crafty.keys["UP_ARROW"] || e.key === Crafty.keys["DOWN_ARROW"]) {
+						if (e.originalEvent)
+							delete e.originalEvent;
 						this.netTrigger("KeyDown", e);
+					}
 				})
 				.bind("KeyUp", function(e) {
-					if (e.key === Crafty.keys["UP_ARROW"] || e.key === Crafty.keys["DOWN_ARROW"])
+					if (e.key === Crafty.keys["UP_ARROW"] || e.key === Crafty.keys["DOWN_ARROW"]) {
+						if (e.originalEvent)
+							delete e.originalEvent;
 						this.netTrigger("KeyUp", e);
+					}
 				})
 			})
 			.define("SERVER", function() {

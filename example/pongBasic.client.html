@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Test</title>
-	<!--
-	<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-	-->
+    <title>Pong Basic</title>
 	<script src="crafty_client.js"></script>
 	<script src="npm_crafty.client.js"></script>
 	<script src="pongBasic.game.js"></script>
@@ -12,7 +9,6 @@
   <body>
 	<script>
 	window.onload = function() {
-		
 		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 		}, function(socket) { //connect callback
 			//create Crafty Client
@@ -23,7 +19,6 @@
 			exports.startGame(Crafty);
 		}, function(socket) { // disconnect callback
 		});
-		
 	};
 	</script>
   </body>
