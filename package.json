@@ -1,5 +1,5 @@
 {
-	"version":"0.5.3-3",
+	"version":"0.5.3-4",
 	"name":"npm_crafty",
 	"description":"A server version of craftyJS. It allows multiple server-client(s) sessions.",
 	"keywords":[
