@@ -31,3 +31,22 @@ npm_crafty.createServer = function( room, sockets );
  */
 npm_crafty.addClient = function(Crafty, socket);
 ```
+
+# CLIENT
+--------
+```html
+<head>
+  <!-- load the ordinary crafty library -->
+  <script src="crafty_client.js"></script>
+  <!-- load the npm_crafty module -->
+  <script src="npm_crafty.js"></script>
+  ...
+</head>
+```
+
+```javascript
+/**
+ * Setu
+ */
+exports.setupDefault
+```
