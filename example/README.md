@@ -6,6 +6,81 @@ When you install the module you have to `var npm_crafty = require('npm_crafty');
 Run the server with `node exampleName.server.js` (from the appropriate working directory).  
 Run the client by opening the url `localhost` with your browser (the browser will load the _html_ file).
 
+## Simple
+=========
+This example shows you basic usage of npm_crafty for creating one client-server room.   
+The server initiates an event on client connect. The client logs the event and replies back to the server. 
+The server logs the event.
+
+### Server
+```javascript
+var craftyModule = require('../lib/npm_crafty.server');
+var path = require('path');
+
+//setup default server with the following arguments
+craftyModule.setupDefault( function (data) { //immediate callback
+
+ //setup additional get requests
+	data.app.get('/', function (req, res) {
+		res.sendfile(path.join(__dirname + '/simple.client.html'));
+	});
+		
+	//create Crafty Server and bind it to "Room1"
+	data.Crafty = craftyModule.createServer("Room1", data.io.sockets);
+	
+	//server will receive event from client back
+	data.Crafty.netBind("CustomEvent", function(msg) {
+		console.log("2. Server receive event");
+	});
+	
+}, function (socket, data) { //connect callback
+
+	//bind client socket to crafty instance, thus "Room1"
+	craftyModule.addClient(data.Crafty, socket);
+	
+	//send event to newly connected client
+	data.Crafty.netTrigger("CustomEvent", "customData", false);
+	
+}, function (socket, data) { //disconnect callback
+});
+```
+### Client
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Simple</title>
+ <script src="crafty_client.js"></script>
+	<script src="npm_crafty.js"></script>
+  </head>
+  <body>
+	<script>
+	window.onload = function() {
+		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
+			
+			//create Crafty Client
+			Crafty = exports.createClient("CLIENT");
+			
+			//client will receive event and send back to server
+			Crafty.netBind("CustomEvent", function(data) {
+				console.log("1. Client receive event");
+				Crafty.netTrigger("CustomEvent", data, false);
+			});
+			
+		}, function(socket) { //connect callback
+		
+			//bind client socket to server socket
+			exports.setServer(Crafty, socket);
+			
+		}, function(socket) { // disconnect callback
+		});
+	};
+	</script>
+  </body>
+</html>
+```
+
+
 ## PongBasic
 ============
 This is an adaptation of a [basic pong game](http://craftyjs.com/tutorial/getting-started/how-crafty-works#a_simple_game_of_pong).
