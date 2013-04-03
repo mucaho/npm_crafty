@@ -26,6 +26,9 @@ exports.startGame = function(Crafty) {
 		}
 	});
 	
+	/**
+	* Movable Component. Automatically moves dX, dY every frame
+	*/
 	Crafty.c("Movable", {
 		init: function(entity) {
 			this.requires("2D");
