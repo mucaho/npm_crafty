@@ -1,4 +1,4 @@
-exports.startGame = function(Crafty, CLIENT) {
+exports.startGame = function(Crafty) {
 	Crafty.init(600, 300);
 	
 	const TYPE_BORDER = "border";
