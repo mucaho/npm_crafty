@@ -1,49 +1,43 @@
-var app = require('express')(),
-	server = require('http').createServer(app),
-	io = require('socket.io').listen(server),
-	path = require('path');
+var craftyModule = require('../lib/npm_crafty.server');
+var path = require('path');
 
-server.listen(80);
-app.get('/', function (req, res) {
-	res.sendfile(__dirname + '/pongBasic.client.html');
-});
-app.get('/npm_crafty.js', function (req, res) {
-	res.sendfile(path.join(__dirname + '/../lib' + '/npm_crafty.js'));
-});
-app.get('/npm_crafty.net.js', function (req, res) {
-	res.sendfile(path.join(__dirname + '/../lib' + '/npm_crafty.net.js'));
-});
-app.get('/crafty_client.js', function (req, res) {
-	res.sendfile(path.join(__dirname + '/../lib' + '/crafty_client.js'));
-});
-
-io.sockets.on('connection', function (socket) {
-	startSession(socket);
-	
-	console.log("Connected ", socket.id);
-	socket.on('disconnect', function (arg) {
-		console.log("Disconnected ", socket.id);
+//setup default server with the following arguments
+craftyModule.setupDefault( function (data) { //immediate callback
+	//setup additional get requests
+	data.app.get('/', function (req, res) {
+		res.sendfile(path.join(__dirname + '/pongBasic.client.html'));
 	});
-});
-
-
-
-io.set('log level', 1);
-
-app.get('/pongBasic.game.js', function (req, res) {
-	res.sendfile(__dirname + '/pongBasic.game.js');
-});
-
-var startSession = function(socket) {
-	//load module
-	var craftyModule = require('../lib/npm_crafty');
-	//create Crafty Server
-	Crafty = craftyModule.createServer();
-	//bind to socket
-	craftyModule.toClient(socket, Crafty);
+	data.app.get('/pongBasic.game.js', function (req, res) {
+		res.sendfile(path.join(__dirname + '/pongBasic.game.js'));
+	});
+		
+	//create Crafty Server and bind it to "Room1"
+	data.Crafty = craftyModule.createServer("Room1", data.io.sockets);
 	
-	
+	//start the loading scene of our game
 	var pongBasic = require('./pongBasic.game.js');
-	pongBasic.startGame(Crafty, false);
-}
+	pongBasic.startGame(data.Crafty);
+
+	//make a client counter -> if it reaches 2, start the main scene
+	data.clients = 0;
 	
+}, function (socket, data) { //connect callback
+	//bind to socket
+	craftyModule.addClient(data.Crafty, socket);
+	
+	//increase client counter
+	data.clients++;
+	if (data.clients === 2) { //2 clients connected
+		//start main scene
+		data.Crafty.scene("main");
+	}
+	
+}, function (socket, data) { //disconnect callback
+	//socket will auto leave room
+	
+	data.clients--;
+	//start the loading scene again
+	data.Crafty.scene("loading");
+});
+
+//TODO auto manage rooms and clients;

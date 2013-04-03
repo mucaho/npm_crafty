@@ -1,43 +1,47 @@
 {
-"version":"0.5.3-2",
-"name":"npm_crafty",
-"description":"A server version of craftyJS",
-"keywords":[
-	"crafty",
-	"craftyJS",
-	"npm",
-	"server"
-],
-"homepage":"https://github.com/mucaho/npm_crafty",
-"author":{
-	"name":"mucaho",
-	"email":"mkucko@gmail.com",
-	"url":"https://github.com/mucaho/npm_crafty"
-},
-"repository":{
-	"type":"git",
-	"url":"https://github.com/mucaho/npm_crafty"
-},
-"bugs":{
-	"email":"mkucko@gmail.com",
-	"url":"https://github.com/mucaho/npm_crafty/issues"
-},
-"directories":{
-	"doc":"./",
-	"example":"./example",
-	"lib":"./lib"
-},
-"main":"./lib/npm_crafty.js",
-"engines":{
-	"node":""
-},
-"licenses":[{
-	"type":"MIT",
-	"url":"https://raw.github.com/mucaho/npm_crafty/master/LICENSE"
-}],
-"readmeFilename":"./example/README.md",
-"maintainers":[{
-	"name":"mucaho",
-	"email":"mkucko@gmail.com"
-}]
+	"version":"0.5.3-3",
+	"name":"npm_crafty",
+	"description":"A server version of craftyJS. It allows multiple server-client(s) sessions.",
+	"keywords":[
+		"crafty",
+		"craftyJS",
+		"npm",
+		"server"
+	],
+	"homepage":"https://github.com/mucaho/npm_crafty",
+	"repository":{
+		"type":"git",
+		"url":"https://github.com/mucaho/npm_crafty"
+	},
+	"bugs":{
+		"email":"mkucko@gmail.com",
+		"url":"https://github.com/mucaho/npm_crafty/issues"
+	},
+	"licenses":[{
+		"type":"MIT",
+		"url":"https://raw.github.com/mucaho/npm_crafty/master/LICENSE"
+	}],
+	"author":{
+		"name":"mucaho",
+		"email":"mkucko@gmail.com",
+		"url":"https://github.com/mucaho/npm_crafty"
+	},
+	"maintainers":[{
+		"name":"mucaho",
+		"email":"mkucko@gmail.com"
+	}],
+	"directories":{
+		"doc":"./",
+		"example":"./example",
+		"lib":"./lib"
+	},
+	"readmeFilename":"./example/README.md",
+	"main":"./lib/npm_crafty.server.js",
+	"engines":{
+		"node":""
+	},
+	"dependencies":{
+		"socket.io":"0.9.x", 
+		"express":"3.x"
+	}
 }
