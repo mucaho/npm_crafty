@@ -31,8 +31,7 @@ The network machine's name is specified on the client / server creation (see __l
 Crafty.define("CLIENT", function() {
 	Crafty.e("2D, Net")
 		.setName("Loading Text")
-		...
-		
+		...		
 });
 
 /**
