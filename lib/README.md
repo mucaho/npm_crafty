@@ -29,7 +29,7 @@ npm_crafty.setupDefault = function( immediateCallback, connectCallback, disconne
 npm_crafty.createServer = function( room, sockets );
 
 /**
- * Add a client to the specified server instance, thus adding the client to the server instance room.
+ * Add a client to the specified server instance, thus adding the client to the instance room.
  */
 npm_crafty.addClient = function(Crafty, socket);
 ```
@@ -40,7 +40,7 @@ npm_crafty.addClient = function(Crafty, socket);
 <head>
   <!-- load the ordinary crafty library -->
   <script src="crafty_client.js"></script>
-  <!-- load the npm_crafty module -->
+  <!-- import the npm_crafty module -->
   <script src="npm_crafty.js"></script>
   ...
 </head>
@@ -59,8 +59,7 @@ npm_crafty.addClient = function(Crafty, socket);
 exports.setupDefault = function( immediateCallback, connectCallback, disconnectCallback);
 
 /**
- * Create a crafty client instance, which will communicate with server in the specified room.
- * (The room argument is actually not used right now and can be ommited).
+ * Create a crafty client instance.
  * 
  * The client's machine label is set to LABEL (used in determining which code to execute).
  */
