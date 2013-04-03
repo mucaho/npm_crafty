@@ -58,6 +58,28 @@ exports.startGame = function(Crafty) {
 		}
 	});
 	
+	Crafty
+	.define("CLIENT", function() {
+		this.netBind("SceneChange", function(data) {
+			this.scene(data.newScene);
+		});
+	})
+	.define("SERVER", function() {
+		this.bind("SceneChange", function(data) {
+			this.netTrigger("SceneChange", data);
+		});
+	});
+
+	Crafty.scene("loading", function() {
+		Crafty.e("2D, Net")
+			.define("CLIENT", function() {
+				this.addComponent("DOM, Text")
+				.attr({ w: 100, h: 20, x: 150, y: 120 })
+				.text("Waiting for clients...")
+				.css({ "text-align": "center" });
+			});
+	});
+	
 	
 	Crafty.scene("main", function() {
 		Crafty.define("CLIENT", function() {
@@ -241,6 +263,6 @@ exports.startGame = function(Crafty) {
 
 	});
 	
-	//automatically play the main scene
-	Crafty.scene("main");
+	//automatically play the loading scene
+	Crafty.scene("loading");
 }

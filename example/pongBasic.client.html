@@ -10,13 +10,14 @@
 	<script>
 	window.onload = function() {
 		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
-		}, function(socket) { //connect callback
 			//create Crafty Client
 			Crafty = exports.createClient(window.prompt("Enter CLIENT1 or CLIENT2"),"Room1");
-			//bind to socket
-			exports.setServer(Crafty, socket);
 			
-			exports.startGame(Crafty);
+			//start the loading scene of our game
+			exports.startGame(Crafty);		
+		}, function(socket) { //connect callback
+			//bind to socket
+			exports.setServer(Crafty, socket);		
 		}, function(socket) { // disconnect callback
 		});
 	};

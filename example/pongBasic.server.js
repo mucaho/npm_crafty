@@ -11,19 +11,33 @@ craftyModule.setupDefault( function (data) { //immediate callback
 		res.sendfile(path.join(__dirname + '/pongBasic.game.js'));
 	});
 		
-	//create Crafty Server
+	//create Crafty Server and bind it to "Room1"
 	data.Crafty = craftyModule.createServer("Room1", data.io.sockets);
-
-	//start actual game
+	
+	//start the loading scene of our game
 	var pongBasic = require('./pongBasic.game.js');
 	pongBasic.startGame(data.Crafty);
+
+	//make a client counter -> if it reaches 2, start the main scene
+	data.clients = 0;
 	
 }, function (socket, data) { //connect callback
 	//bind to socket
 	craftyModule.addClient(data.Crafty, socket);
 	
+	//increase client counter
+	data.clients++;
+	if (data.clients === 2) { //2 clients connected
+		//start main scene
+		data.Crafty.scene("main");
+	}
+	
 }, function (socket, data) { //disconnect callback
 	//socket will auto leave room
+	
+	data.clients--;
+	//start the loading scene again
+	data.Crafty.scene("loading");
 });
 
 //TODO auto manage rooms and clients;
