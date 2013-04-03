@@ -21,7 +21,7 @@ var npm_crafty = require('npm_crafty');
 npm_crafty.setupDefault = function( immediateCallback, connectCallback, disconnectCallback, port );
 
 /**
- * Create a crafty server instance, which will communicate with clients in the specified room.
+ * Create a crafty server instance. Each server instance shall have an unique room label.
  * Pass io.sockets as 2nd argument.
  * 
  * The server's machine label is set to "SERVER" (used in determining which code to execute).
@@ -29,7 +29,7 @@ npm_crafty.setupDefault = function( immediateCallback, connectCallback, disconne
 npm_crafty.createServer = function( room, sockets );
 
 /**
- * Add a client to the specified server instance, thus adding the client to the instance room.
+ * Add a client socket to the server instance.
  */
 npm_crafty.addClient = function(Crafty, socket);
 ```
@@ -66,7 +66,7 @@ exports.setupDefault = function( immediateCallback, connectCallback, disconnectC
 exports.createClient = function(label, room);
 
 /**
- * Bind the client to the specified server instance.
+ * Bind the server socket to the client instance.
  */
 exports.setServer = function(Crafty, socket);
 ```
