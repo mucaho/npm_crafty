@@ -88,7 +88,7 @@ Open __localhost__ and enter __"CLIENT1"__, then open __localhost__ again in a n
 CLIENT1 controls the paddle with __W & S__, CLIENT2 with __UP & DOWN__.
 
 In this basic version, each client controls one paddle. The input is send to the server. The server
-handles the game logic. The server feeds the updated game logic to the client. The client displays the entities.
+handles the game logic. The server feeds the updated game state back to the client. The client displays the entities.
 
 Note that npm_crafty only handles **low-level networking**. In a real world example, where the server
 is not __localhost__ you would have to predict client movement on the client locally and adjust the movement
