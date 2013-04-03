@@ -11,7 +11,7 @@
 	window.onload = function() {
 		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			//create Crafty Client
-			Crafty = exports.createClient(window.prompt("Enter CLIENT1 or CLIENT2"),"Room1");
+			Crafty = exports.createClient(window.prompt("Enter CLIENT1 or CLIENT2"));
 			
 			//start the loading scene of our game
 			exports.startGame(Crafty);		
