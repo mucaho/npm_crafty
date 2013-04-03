@@ -27,7 +27,7 @@ ent.netUnbind("EventName", callback);
 The network machine's name is specified on the client / server creation (see __lib__ documentation). 
 
 ```javascript
-//this will create an entity on the machine, which machine names contain "CLIENT"
+//this will create an entity on the machine, whose name contains "CLIENT"
 Crafty.define("CLIENT", function() {
 	Crafty.e("2D, Net")
 		.setName("Loading Text")
