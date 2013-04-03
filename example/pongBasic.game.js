@@ -71,13 +71,14 @@ exports.startGame = function(Crafty) {
 	});
 
 	Crafty.scene("loading", function() {
-		Crafty.e("2D, Net")
-			.define("CLIENT", function() {
-				this.addComponent("DOM, Text")
+		Crafty.define("CLIENT", function() {
+			Crafty.e("2D, Net")
+				.setName("Loading Text")
+				.addComponent("DOM, Text")
 				.attr({ w: 100, h: 20, x: 150, y: 120 })
 				.text("Waiting for clients...")
 				.css({ "text-align": "center" });
-			});
+		});
 	});
 	
 	
@@ -88,6 +89,7 @@ exports.startGame = function(Crafty) {
 
 		//ROOF
 		Crafty.e("2D, Net")
+			.setName("Roof")
 			.attr({ x: 0, y: 0, w: 600, h: 10 })
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Color")
@@ -99,6 +101,7 @@ exports.startGame = function(Crafty) {
 			});
 		//FLOOR, same as ROOF
 		Crafty.e("2D, Net")
+			.setName("Floor")
 			.attr({ x: 0, y: 290, w: 600, h: 10 })
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Color")
@@ -112,6 +115,7 @@ exports.startGame = function(Crafty) {
 		
 		//SCORE LEFT
 		Crafty.e("2D, Net")
+			.setName("Score Left")
 			.attr({ x: 0, y: 10, w: 10, h: 280})
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Text")
@@ -133,6 +137,7 @@ exports.startGame = function(Crafty) {
 
 		//SCORE RIGHT, analog to SCORE LEFT
 		Crafty.e("2D, Net")
+			.setName("Score Right")
 			.attr({ x: 590, y: 10, w: 10, h: 280})
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Text")
@@ -155,6 +160,7 @@ exports.startGame = function(Crafty) {
 		
 		//PADDLE LEFT
 		Crafty.e("2D, Net")
+			.setName("Paddle Left")
 			.attr({ x: 40, y: 100, w: 10, h: 100 })
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Color")
@@ -189,6 +195,7 @@ exports.startGame = function(Crafty) {
 
 		//PADDLE RIGHT, analog to PADDLE LEFT but with CLIENT2
 		Crafty.e("2D, Net")
+			.setName("Paddle Right")
 			.attr({ x: 550, y: 100, w: 10, h: 100 })
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Color")
@@ -224,6 +231,7 @@ exports.startGame = function(Crafty) {
 		
 		//BALL
 		Crafty.e("2D, Net")
+			.setName("Ball")
 			.attr({ x: 300, y: 150, w: 10, h: 10 })
 			.define("CLIENT", function() {
 				this.addComponent("DOM, Color")
