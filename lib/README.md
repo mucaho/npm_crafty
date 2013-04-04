@@ -63,7 +63,7 @@ exports.setupDefault = function( immediateCallback, connectCallback, disconnectC
  * 
  * The client's machine label is set to LABEL (used in determining which code to execute).
  */
-exports.createClient = function(label, room);
+exports.createClient = function(label);
 
 /**
  * Bind the server socket to the client instance.
