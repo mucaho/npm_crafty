@@ -9,15 +9,14 @@ var npm_crafty = require('npm_crafty');
 
 /**
  * Setup a default node server, which will serve npm_crafty's required files (it will reply to GET requests).
- * socket.io is attached to the server also. app, io, server become  acessible as the module's properties.
+ * socket.io is attached to the server also. 
+ * app, io, server become acessible as the module's properties.
  * 
  * Each callback will be called at the appropriate times.
- * An initially empty object data = {} will be passed between the callbacks, for the user to save his data 
- * (e.g. for a Crafty server instance).
+ * immediateCallback = function() ... will be called immediately
+ * connectCallback = function(socket) ... will be called when a client connects
+ * disconnectCallback = function(socket) ... will be called when a client disconnects
  * 
- * immediateCallback = function(data) ... will be called immediately
- * connectCallback = function(socket, data) ... will be called when a client connects
- * disconnectCallback = function(socket, data) ... will be called when a client disconnects
  * port ... the port to use (defaults to standard HTTP port 80)
  */
 npm_crafty.setupDefault = function ( immediateCallback, connectCallback, disconnectCallback, port );
@@ -52,7 +51,6 @@ npm_crafty.addClient = function ( Crafty, socket );
  * Setup a default browser client, which will connect to the node server of the website automatically.
  * 
  * Each callback will be called at the appropriate times.
- * 
  * immediateCallback = function() ... will be called immediately
  * connectCallback = function(socket) ... will be called when the client connects to the server
  * disconnectCallback = function(socket) ... will be called when the client disconnects from the server
