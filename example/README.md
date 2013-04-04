@@ -14,34 +14,35 @@ The server logs the event.
 
 ### Server
 ```javascript
-var craftyModule = require('../lib/npm_crafty.server');
+var npm_crafty = require('../lib/npm_crafty.server');
 var path = require('path');
+var Crafty;
 
 //setup default server with the following arguments
-craftyModule.setupDefault( function (data) { //immediate callback
+npm_crafty.setupDefault( function () { //immediate callback
 
- //setup additional get requests
-	data.app.get('/', function (req, res) {
+	//setup additional get requests
+	npm_crafty.app.get('/', function (req, res) {
 		res.sendfile(path.join(__dirname + '/simple.client.html'));
 	});
-		
+	
 	//create Crafty Server and bind it to "Room1"
-	data.Crafty = craftyModule.createServer("Room1", data.io.sockets);
+	Crafty = npm_crafty.createServer("Room1");
 	
 	//server will receive event from client back
-	data.Crafty.netBind("CustomEvent", function(msg) {
+	Crafty.netBind("CustomEvent", function(msg) {
 		console.log("2. Server receive event");
 	});
 	
-}, function (socket, data) { //connect callback
+}, function (socket) { //connect callback
 
 	//bind client socket to crafty instance, thus "Room1"
-	craftyModule.addClient(data.Crafty, socket);
+	npm_crafty.addClient(Crafty, socket);
 	
 	//send event to newly connected client
-	data.Crafty.netTrigger("CustomEvent", "customData", false);
+	Crafty.netTrigger("CustomEvent", "customData");
 	
-}, function (socket, data) { //disconnect callback
+}, function (socket) { //disconnect callback
 });
 ```
 ### Client
@@ -50,15 +51,15 @@ craftyModule.setupDefault( function (data) { //immediate callback
 <html lang="en">
   <head>
     <title>Simple</title>
- <script src="crafty_client.js"></script>
-	<script src="npm_crafty.js"></script>
+    <script src="crafty_client.js"></script>
+    <script src="npm_crafty.js"></script>
   </head>
   <body>
 	<script>
 	window.onload = function() {
 		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			
-			//create Crafty Client
+			//create Crafty Client which will be labelled CLIENT
 			Crafty = exports.createClient("CLIENT");
 			
 			//client will receive event and send back to server
