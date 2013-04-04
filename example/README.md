@@ -65,7 +65,7 @@ npm_crafty.setupDefault( function () { //immediate callback
 			//client will receive event and send back to server
 			Crafty.netBind("CustomEvent", function(data) {
 				console.log("1. Client receive event");
-				Crafty.netTrigger("CustomEvent", data, false);
+				Crafty.netTrigger("CustomEvent", data);
 			});
 			
 		}, function(socket) { //connect callback
