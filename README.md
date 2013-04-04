@@ -1,9 +1,15 @@
 npm_crafty
 ==========
 
-This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craftyJS](http://craftyjs.com/).  
-This allows you to create multiple **client(s)<->server** instances. In each instance (room), the clients send events
-to the server and the server sends events to all the clients.
+This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craftyJS](http://craftyjs.com/).
+
+**npm_crafty** adds a logical overlay network on-top of **crafty**   
+* You can create multiple __rooms__. Each room contains __one server__ and __multiple clients__.   
+A client can send events to the server. The server can send events to all clients.   
+* Define your client & server code __in one place__, and let the module determine __which code to run__.   
+* Network events are __automatically routed__ to the correct entity instance on the other end of the network.
+
+_Go multiplayer today with a minimalistic and easy-to-use net api!_
 
 Be sure to check out the documentation inside each folder:   
 * The module can be found inside the __lib__ folder.
