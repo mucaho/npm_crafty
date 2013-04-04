@@ -12,8 +12,8 @@ A client can send events to the server. The server can send events to all client
 _Go multiplayer today with a minimalistic and easy-to-use net api!_
 
 Be sure to check out the documentation inside each folder:   
-* The module can be found inside the __lib__ folder.
-* An example can be found inside the __example__ folder.
+* The module can be found inside the __lib__ folder.   
+* An example can be found inside the __example__ folder.   
 * The differences between original crafty library and the modified library can be seen inside the 
 __diff__ folder.
 
