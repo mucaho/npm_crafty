@@ -51,15 +51,15 @@ npm_crafty.setupDefault( function () { //immediate callback
 <html lang="en">
   <head>
     <title>Simple</title>
- <script src="crafty_client.js"></script>
-	<script src="npm_crafty.js"></script>
+    <script src="crafty_client.js"></script>
+    <script src="npm_crafty.js"></script>
   </head>
   <body>
 	<script>
 	window.onload = function() {
 		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			
-			//create Crafty Client
+			//create Crafty Client which will be labelled CLIENT
 			Crafty = exports.createClient("CLIENT");
 			
 			//client will receive event and send back to server
