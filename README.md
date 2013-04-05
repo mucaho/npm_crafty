@@ -5,7 +5,7 @@ This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craf
 
 **npm_crafty** adds a logical overlay network on-top of **crafty**   
 * You can create multiple __rooms__. Each room contains __one server__ and __multiple clients__.   
-A client can send events to the server. The server can send events to all clients.   
+* A client can __send events__ to the server. The server can __send events__ to all clients.   
 * Define your client & server code __in one place__, and let the module determine __which code to run__.   
 * Network events are __automatically routed__ to the correct entity instance on the other end of the network.
 
@@ -19,8 +19,8 @@ __diff__ folder.
 
 # Misc
 ------
-If you have a __desire__, open an __issue__. 
-If you want to __contribute__, open a pull request against the __development branch__.
+If you have a __suggestion or bug report__, open an __issue__. 
+If you want to __contribute__, open a __pull request__.
 
 # License
 -------------
