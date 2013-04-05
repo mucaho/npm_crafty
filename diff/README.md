@@ -16,7 +16,7 @@ Crafty.netTrigger("EventName", eventData, isVolatile);
 Crafty.netBind("EventName", callback);
 Crafty.netUnbind("EventName", callback);
 
-//entity events will be delivered to the entity with the same ID
+//entity events will be delivered to the entity with the same name
 var ent = Crafty.e("Net"); //this component enables net features
 ent.setName("MyEntity") //apply an unique name
 ent.netTrigger("EventName", eventData, isVolatile);
