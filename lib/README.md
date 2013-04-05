@@ -32,6 +32,24 @@ npm_crafty.createServer = function ( room );
  * Add a client socket to the server instance.
  */
 npm_crafty.addClient = function ( Crafty, socket );
+
+/**
+ * The express application instance.
+ * It is only available after calling npm_crafty.setupDefault(...);
+ */
+npm_crafty.app;
+
+/**
+ * The http server instance.
+ * It is only available after calling npm_crafty.setupDefault(...);
+ */
+npm_crafty.server;
+
+/**
+ * The socket.io instance.
+ * It is only available after calling npm_crafty.setupDefault(...);
+ */
+npm_crafty.io;
 ```
 
 # CLIENT
