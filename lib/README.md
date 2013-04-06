@@ -72,8 +72,10 @@ npm_crafty.io;
  * immediateCallback = function() ... will be called immediately
  * connectCallback = function(socket) ... will be called when the client connects to the server
  * disconnectCallback = function(socket) ... will be called when the client disconnects from the server
+ * 
+ * serverAddress ... the server address (can be omitted on localhost) e.g. "http://localhost"
  */
-exports.setupDefault = function ( immediateCallback, connectCallback, disconnectCallback );
+exports.setupDefault = function ( immediateCallback, connectCallback, disconnectCallback, serverAddress );
 
 /**
  * Create a crafty client instance.
