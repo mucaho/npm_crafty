@@ -17,6 +17,10 @@ Be sure to check out the documentation inside each folder:
 * The differences between original crafty library and the modified library can be seen inside the 
 __diff__ folder.
 
+# Version
+----------
+Current native crafty version is 0.5.3
+
 # Misc
 ------
 If you have a __suggestion or bug report__, open an __issue__. 
