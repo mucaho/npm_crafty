@@ -97,8 +97,11 @@ accordingly when a corrected position update of the server arrives.
 
 The relevant files are:
 * __pongBasic.client.html__
+  * game room setup on client
 * __pongBasic.server.js__
+  * game room setup on server
 * __pongBasic.game.js__
+  * this is the actual game
   * all __common features__ of entities are defined equally in both server and client
   * the client adds __input and output features__ to entites
   * the server adds __game logic__ features to entities
