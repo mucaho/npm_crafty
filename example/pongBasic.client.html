@@ -9,15 +9,18 @@
   <body>
 	<script>
 	window.onload = function() {
-		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
+		var npm_crafty = require("npm_crafty");
+		npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			//create Crafty Client
-			Crafty = exports.createClient(window.prompt("Enter CLIENT1 or CLIENT2"));
+			Crafty = npm_crafty.createClient(window.prompt("Enter CLIENT1 or CLIENT2"));
 			
 			//start the loading scene of our game
-			exports.startGame(Crafty);		
+			exports.startGame(Crafty);
+
 		}, function(socket) { //connect callback
 			//bind to socket
-			exports.setServer(Crafty, socket);		
+			npm_crafty.setServer(Crafty, socket);
+
 		}, function(socket) { // disconnect callback
 		});
 	};

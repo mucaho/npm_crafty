@@ -1,8 +1,8 @@
-var npm_crafty = require('../lib/npm_crafty.server');
-var path = require('path');
+var path = require('path'),
+	npm_crafty = require('../lib/npm_crafty.server');
+
 var Crafty;
 var clients;
-
 //setup default server with the following arguments
 npm_crafty.setupDefault( function () { //immediate callback
 	//setup additional get requests

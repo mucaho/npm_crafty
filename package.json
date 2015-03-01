@@ -42,6 +42,7 @@
 	},
 	"dependencies":{
 		"socket.io":"0.9.x", 
-		"express":"3.x"
+		"express":"3.x",
+		"browserify-middleware":""
 	}
 }

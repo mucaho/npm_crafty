@@ -1,3 +1,4 @@
+var exports = exports || {};
 exports.startGame = function(Crafty) {
 	Crafty.init(600, 300);
 	
