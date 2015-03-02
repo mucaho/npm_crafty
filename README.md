@@ -1,3 +1,5 @@
+[![NPM](https://nodei.co/npm/npm_crafty.png?compact=true)](https://nodei.co/npm/npm_crafty/)
+
 npm_crafty
 ==========
 
