@@ -1,5 +1,5 @@
 {
-	"version":"0.5.3-7",
+	"version":"0.5.3-8",
 	"name":"npm_crafty",
 	"description":"A server version of craftyJS. It allows multiple server-client(s) sessions.",
 	"keywords":[
@@ -43,7 +43,7 @@
 	"dependencies":{
 		"socket.io":"0.9.x", 
 		"express":"3.x",
-		"browserify-middleware":""
+		"browserify-middleware":"5.x.x"
 	},
 	"devDependencies": {
 		"jsdoc": ""
