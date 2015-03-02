@@ -1,5 +1,4 @@
 ## Removed from crafty
-======================
 The server uses a __stripped-down version of crafty__.
 
 ### Automatic Filtering
