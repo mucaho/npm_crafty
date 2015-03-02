@@ -14,13 +14,12 @@ The server logs the event.
 
 ### Server
 ```javascript
-var npm_crafty = require('../lib/npm_crafty.server');
-var path = require('path');
-var Crafty;
+var path = require('path'),
+	npm_crafty = require('../lib/npm_crafty.server');
 
+var Crafty;
 //setup default server with the following arguments
 npm_crafty.setupDefault( function () { //immediate callback
-
 	//setup additional get requests
 	npm_crafty.app.get('/', function (req, res) {
 		res.sendfile(path.join(__dirname + '/simple.client.html'));
@@ -44,6 +43,7 @@ npm_crafty.setupDefault( function () { //immediate callback
 	
 }, function (socket) { //disconnect callback
 });
+
 ```
 ### Client
 ```html
@@ -51,18 +51,19 @@ npm_crafty.setupDefault( function () { //immediate callback
 <html lang="en">
   <head>
     <title>Simple</title>
-    <script src="crafty_client.js"></script>
-    <script src="npm_crafty.js"></script>
+	<script src="crafty_client.js"></script>
+	<script src="npm_crafty.js"></script>
   </head>
   <body>
 	<script>
 	window.onload = function() {
-		exports.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
+		var npm_crafty = require("npm_crafty");
+		npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			
-			//create Crafty Client which will be labelled CLIENT
-			Crafty = exports.createClient("CLIENT");
+			// create Crafty Client
+			Crafty = npm_crafty.createClient("CLIENT");
 			
-			//client will receive event and send back to server
+			// client will receive event and send back to server
 			Crafty.netBind("CustomEvent", function(data) {
 				console.log("1. Client receive event");
 				Crafty.netTrigger("CustomEvent", data);
@@ -70,8 +71,8 @@ npm_crafty.setupDefault( function () { //immediate callback
 			
 		}, function(socket) { //connect callback
 		
-			//bind client socket to server socket
-			exports.setServer(Crafty, socket);
+			// bind client socket to server socket
+			npm_crafty.setServer(Crafty, socket);
 			
 		}, function(socket) { // disconnect callback
 		});
