@@ -43,7 +43,8 @@
 	"dependencies":{
 		"socket.io":"0.9.x", 
 		"express":"3.x",
-		"browserify-middleware":"5.x.x"
+		"browserify-middleware":"5.x.x",
+		"node-uuid": ""
 	},
 	"devDependencies": {
 		"jsdoc": ""

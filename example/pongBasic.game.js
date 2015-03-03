@@ -22,17 +22,6 @@ exports.startGame = function(Crafty) {
 *
 **************************************************************************/
 
-	Crafty.define("CLIENT", function() {
-			this.netBind("SceneChange", function(data) {
-				this.scene(data.newScene);
-			});
-		})
-		.define("SERVER", function() {
-			this.bind("SceneChange", function(data) {
-				this.netTrigger("SceneChange", data);
-			});
-		});
-
 	Crafty.scene("loading", function() {
 		Crafty.define("CLIENT", function() {
 			Crafty.e("2D, Net")

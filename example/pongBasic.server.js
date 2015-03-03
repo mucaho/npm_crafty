@@ -1,8 +1,8 @@
 var path = require('path'),
-	npm_crafty = require('../lib/npm_crafty.server');
+	npm_crafty = require('../lib/npm_crafty.server'),
+	pongBasic = require('./pongBasic.game.js'),
+	roomManager;
 
-var Crafty;
-var clients;
 //setup default server with the following arguments
 npm_crafty.setupDefault( function () { //immediate callback
 	//setup additional get requests
@@ -12,34 +12,24 @@ npm_crafty.setupDefault( function () { //immediate callback
 	npm_crafty.app.get('/pongBasic.game.js', function (req, res) {
 		res.sendfile(path.join(__dirname + '/pongBasic.game.js'));
 	});
-		
-	//create Crafty Server and bind it to "Room1"
-	Crafty = npm_crafty.createServer("Room1");
 	
-	//start the loading scene of our game
-	var pongBasic = require('./pongBasic.game.js');
-	pongBasic.startGame(Crafty);
-
-	//make a client counter -> if it reaches 2, start the main scene
-	clients = 0;
+	roomManager = new npm_crafty.RoomManager( npm_crafty.io.sockets, ["CLIENT1", "CLIENT2"],  
+		function(Crafty) { // function call to init game
+			pongBasic.startGame(Crafty);
+		},
+		function(Crafty) { // function to call to start game
+			Crafty.scene("main")
+		}, function(Crafty) {
+			Crafty.stop(); // function to call to stop game
+		});
 	
 }, function (socket) { //connect callback
-	//bind to socket
-	npm_crafty.addClient(Crafty, socket);
-	
-	//increase client counter
-	clients++;
-	if (clients === 2) { //2 clients connected
-		//start main scene
-		Crafty.scene("main");
-	}
+
+	roomManager.connectClient(socket);
 	
 }, function (socket) { //disconnect callback
 	//socket will auto leave room
-	
-	clients--;
-	//start the loading scene again
-	Crafty.scene("loading");
-});
 
-//TODO auto manage rooms and clients;
+	roomManager.disconnectClient(socket);
+
+}, 8080);

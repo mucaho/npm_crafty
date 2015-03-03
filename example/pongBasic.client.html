@@ -9,18 +9,21 @@
   <body>
 	<script>
 	window.onload = function() {
-		var npm_crafty = require("npm_crafty");
+		var npm_crafty = require("npm_crafty"),
+			roomManager;
+
 		npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
-			//create Crafty Client
-			Crafty = npm_crafty.createClient(window.prompt("Enter CLIENT1 or CLIENT2"));
-			
-			//start the loading scene of our game
-			exports.startGame(Crafty);
-
+			roomManager = new npm_crafty.RoomManager(
+				function(Crafty) { // function call to init game
+					exports.startGame(Crafty);
+				},
+				function(Crafty) { // function to call to start game
+					Crafty.scene("main");
+				}, function(Crafty) { // function to call to stop game
+					Crafty.stop();
+				});
 		}, function(socket) { //connect callback
-			//bind to socket
-			npm_crafty.setServer(Crafty, socket);
-
+			roomManager.join(socket);
 		}, function(socket) { // disconnect callback
 		});
 	};
