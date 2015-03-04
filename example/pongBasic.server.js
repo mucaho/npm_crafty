@@ -14,22 +14,21 @@ npm_crafty.setupDefault( function () { //immediate callback
 	});
 	
 	roomManager = new npm_crafty.RoomManager( npm_crafty.io.sockets, ["CLIENT1", "CLIENT2"],  
-		function(Crafty) { // function call to init game
+		function(Crafty) { // function to call to create game
 			pongBasic.startGame(Crafty);
 		},
-		function(Crafty) { // function to call to start game
-			Crafty.scene("main")
-		}, function(Crafty) {
-			Crafty.stop(); // function to call to stop game
+		function(Crafty) {
+			Crafty.stop(); // function to call to destroy game
 		});
 	
 }, function (socket) { //connect callback
 
-	roomManager.connectClient(socket);
+	roomManager.listen(socket);
 	
 }, function (socket) { //disconnect callback
 	//socket will auto leave room
 
-	roomManager.disconnectClient(socket);
+	var slot = roomManager.deallocateSlot(socket);
+	console.log("@ LEFT @", slot);
 
 }, 8080);
