@@ -16,9 +16,10 @@
 			roomManager = new npm_crafty.RoomManager(
 				function(Crafty) { // function to call to create game
 					exports.startGame(Crafty);
-				},
-				function(Crafty) { // function to call to destroy game
+				}, function(Crafty) { // function to call to destroy game
 					Crafty.stop();
+				}, 	function(Crafty, slot) { // function to call when player joins
+				}, 	function(Crafty, slot) { // function to call when player leaves
 				});
 		}, function(socket) { //connect callback
 			roomManager.join(socket);
