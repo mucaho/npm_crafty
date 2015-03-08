@@ -13,7 +13,7 @@ npm_crafty.setupDefault( function () { //immediate callback
 		res.sendfile(path.join(__dirname + '/pongBasic.game.js'));
 	});
 	
-	roomManager = new npm_crafty.RoomManager( npm_crafty.io.sockets, ["CLIENT1", "CLIENT2"],  
+	roomManager = new npm_crafty.RoomManager( ["CLIENT1", "CLIENT2"],  
 		function(Crafty) { // function to call to create game
 			pongBasic.startGame(Crafty);
 		}, function(Crafty) { // function to call to destroy game
