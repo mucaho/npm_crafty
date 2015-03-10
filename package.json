@@ -37,6 +37,7 @@
 	},
 	"readmeFilename":"./example/README.md",
 	"main":"./lib/npm_crafty.server.js",
+	"browser":"./lib/npm_crafty.client.js",
 	"engines":{
 		"node":""
 	},
@@ -44,9 +45,9 @@
 		"socket.io":"0.9.x", 
 		"express":"3.x",
 		"browserify-middleware":"5.x.x",
-		"node-uuid": ""
+		"node-uuid":"1.x.x"
 	},
 	"devDependencies": {
-		"jsdoc": ""
+		"jsdoc":""
 	}
 }
