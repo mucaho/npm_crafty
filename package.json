@@ -48,6 +48,7 @@
 		"node-uuid":"1.x.x"
 	},
 	"devDependencies": {
-		"jsdoc":""
+		"jsdoc":"",
+		"jsdoc-react":""
 	}
 }

@@ -17,7 +17,7 @@
 			matchmaker = new npm_crafty.Matchmaker(
 				function(slot, socket) { // function to call to create game
 
-					var Crafty = Client.createClient(slot);
+					var Crafty = Client.createInstance(slot);
 					Client.setServer(Crafty, socket);
 					exports.startGame(Crafty);
 					return Crafty;

@@ -11,7 +11,7 @@ var Server = npm_crafty.setupDefault( function () { //immediate callback
 	});
 	
 	//create Crafty Server and bind it to "Room1"
-	Crafty = Server.createServer("Room1");
+	Crafty = Server.createInstance("Room1");
 	
 	//server will receive event from client back
 	Crafty.netBind("CustomEvent", function(msg) {

@@ -13,7 +13,7 @@
 		var Client = npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			
 			// create Crafty Client
-			Crafty = Client.createClient("CLIENT");
+			Crafty = Client.createInstance("CLIENT");
 			
 			// client will receive event and send back to server
 			Crafty.netBind("CustomEvent", function(data) {

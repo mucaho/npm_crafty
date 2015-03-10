@@ -13,11 +13,11 @@ var Server = npm_crafty.setupDefault( function () { //immediate callback
 		res.sendfile(path.join(__dirname + '/pongBasic.game.js'));
 	});
 	
-	//setup automatic room management
+	//setup automatic matchmaking
 	matchmaker = new npm_crafty.Matchmaker( ["CLIENT1", "CLIENT2"], // available slots
 		function(roomName) { // function to call to create game
 
-			var Crafty = Server.createServer(roomName);
+			var Crafty = Server.createInstance(roomName);
 			pongBasic.startGame(Crafty);
 			return Crafty;
 
