@@ -15,18 +15,19 @@ The server logs the event.
 ### Server
 ```javascript
 var path = require('path'),
-	npm_crafty = require('../lib/npm_crafty.server');
+	npm_crafty = require('npm_crafty');
 
 var Crafty;
+
 //setup default server with the following arguments
-npm_crafty.setupDefault( function () { //immediate callback
+var Server = npm_crafty.setupDefault( function () { //immediate callback
 	//setup additional get requests
-	npm_crafty.app.get('/', function (req, res) {
+	Server.app.get('/', function (req, res) {
 		res.sendfile(path.join(__dirname + '/simple.client.html'));
 	});
 	
 	//create Crafty Server and bind it to "Room1"
-	Crafty = npm_crafty.createServer("Room1");
+	Crafty = Server.createInstance("Room1");
 	
 	//server will receive event from client back
 	Crafty.netBind("CustomEvent", function(msg) {
@@ -36,14 +37,13 @@ npm_crafty.setupDefault( function () { //immediate callback
 }, function (socket) { //connect callback
 
 	//bind client socket to crafty instance, thus "Room1"
-	npm_crafty.addClient(Crafty, socket);
+	Server.addClient(Crafty, socket);
 	
 	//send event to newly connected client
 	Crafty.netTrigger("CustomEvent", "customData");
 	
 }, function (socket) { //disconnect callback
 });
-
 ```
 ### Client
 ```html
@@ -58,10 +58,11 @@ npm_crafty.setupDefault( function () { //immediate callback
 	<script>
 	window.onload = function() {
 		var npm_crafty = require("npm_crafty");
-		npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
+		
+		var Client = npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 			
 			// create Crafty Client
-			Crafty = npm_crafty.createClient("CLIENT");
+			Crafty = Client.createInstance("CLIENT");
 			
 			// client will receive event and send back to server
 			Crafty.netBind("CustomEvent", function(data) {
@@ -72,7 +73,7 @@ npm_crafty.setupDefault( function () { //immediate callback
 		}, function(socket) { //connect callback
 		
 			// bind client socket to server socket
-			npm_crafty.setServer(Crafty, socket);
+			Client.setServer(Crafty, socket);
 			
 		}, function(socket) { // disconnect callback
 		});
@@ -85,8 +86,8 @@ npm_crafty.setupDefault( function () { //immediate callback
 
 ## PongBasic
 ============
-This is an adaptation of a [basic pong game](http://craftyjs.com/tutorial/getting-started/how-crafty-works#a_simple_game_of_pong).
-Open __localhost__ and enter __"CLIENT1"__, then open __localhost__ again in a new tab and enter __"CLIENT2"__.
+This is an adaptation of a [basic pong game](http://craftyjs.com/tutorial/getting-started/how-crafty-works#a_simple_game_of_pong).   
+Open __localhost__ in the browser, then open __localhost__ again in a new browser tab. A game room will be created for every two players that join, so you can open/close more tabs and additional game rooms will be setup and toredown accordingly.   
 CLIENT1 controls the paddle with __W & S__, CLIENT2 with __UP & DOWN__.
 
 In this basic version, each client controls one paddle. The input is send to the server. The server
