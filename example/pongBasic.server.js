@@ -1,7 +1,7 @@
 var path = require('path'),
 	npm_crafty = require('../lib/npm_crafty.server'),
 	pongBasic = require('./pongBasic.game.js'),
-	roomManager;
+	matchmaker;
 
 //setup default server with the following arguments
 var Server = npm_crafty.setupDefault( function () { //immediate callback
@@ -14,7 +14,7 @@ var Server = npm_crafty.setupDefault( function () { //immediate callback
 	});
 	
 	//setup automatic room management
-	roomManager = new npm_crafty.RoomManager( ["CLIENT1", "CLIENT2"], // available slots
+	matchmaker = new npm_crafty.Matchmaker( ["CLIENT1", "CLIENT2"], // available slots
 		function(roomName) { // function to call to create game
 
 			var Crafty = Server.createServer(roomName);
@@ -40,7 +40,7 @@ var Server = npm_crafty.setupDefault( function () { //immediate callback
 	
 }, function (socket) { //connect callback
 
-	roomManager.listen(socket);
+	matchmaker.listen(socket);
 	
 }, function (socket) { //disconnect callback
 	//socket will auto leave room

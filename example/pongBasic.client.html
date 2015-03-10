@@ -10,11 +10,11 @@
 	<script>
 	window.onload = function() {
 		var npm_crafty = require("npm_crafty"),
-			roomManager;
+			matchmaker;
 
 		var Client = npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
 
-			roomManager = new npm_crafty.RoomManager(
+			matchmaker = new npm_crafty.Matchmaker(
 				function(slot, socket) { // function to call to create game
 
 					var Crafty = Client.createClient(slot);
@@ -33,11 +33,11 @@
 
 		}, function(socket) { //connect callback
 
-			roomManager.join(socket);
+			matchmaker.join(socket);
 
 		}, function(socket) { // disconnect callback
 
-			roomManager.leave(socket);
+			matchmaker.leave(socket);
 
 		});
 	};
