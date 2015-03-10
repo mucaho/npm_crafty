@@ -12,19 +12,33 @@
 		var npm_crafty = require("npm_crafty"),
 			roomManager;
 
-		npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
+		var Client = npm_crafty.setupDefault(function() { //immediate callback after Crafty with Crafty.net is available
+
 			roomManager = new npm_crafty.RoomManager(
-				function(Crafty) { // function to call to create game
+				function(slot, socket) { // function to call to create game
+
+					var Crafty = Client.createClient(slot);
+					Client.setServer(Crafty, socket);
 					exports.startGame(Crafty);
-				}, function(Crafty) { // function to call to destroy game
+					return Crafty;
+
+				}, function(Crafty, socket) { // function to call to destroy game
+
+					Client.unsetServer(Crafty, socket);
 					Crafty.stop();
-				}, 	function(Crafty, slot) { // function to call when player joins
-				}, 	function(Crafty, slot) { // function to call when player leaves
+
+				}, 	function(Crafty, slot) { // function to call when other player joins
+				}, 	function(Crafty, slot) { // function to call when other player leaves
 				});
+
 		}, function(socket) { //connect callback
+
 			roomManager.join(socket);
+
 		}, function(socket) { // disconnect callback
+
 			roomManager.leave(socket);
+
 		});
 	};
 	</script>
