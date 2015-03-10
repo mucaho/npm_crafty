@@ -31,10 +31,14 @@ In order for the communication to work between server and client(s) you also hav
 hosts will affect how your game sessions are setup. Each game session is an unique instance of your game; there can be
 multiple game sessions taking place at once and each one takes place inside a game room. A game room consists
 of one crafty server instance that communicates with multiple crafty client instances.   
-The documentation on game room setup (server and client) setup can be found inside the __lib__ folder.    
+The game room setup (server and client) can be found inside the __lib__ folder.    
 __You have to setup game room(s) so that each server instance knows with which client instance to communicate.__
 
 An example can be found inside the __example__ folder.
+
+# Documentation
+---------------
+See the [npm_crafty io page](http://mucaho.github.io/npm_crafty/).
 
 # Misc
 ------
