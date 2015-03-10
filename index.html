@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>npm_crafty documentation</title>
+    <link href="style.css" rel="stylesheet">
+    <script src="app.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <section class="api">
+            <section class="index">
+                <h1>npm_crafty documentation</h1>
+
+                <ul>
+                    <li>
+                        <a href="#Crafty">Crafty —</a>
+                    </li>
+
+                    <li>
+                        <a href="#Net">Net —</a>
+                    </li>
+
+                    <li>
+                        <a href="#e">e —</a>
+                    </li>
+
+                    <li>
+                        <a href="#Client">Client —</a>
+                    </li>
+
+                    <li>
+                        <a href="#Server">Server —</a>
+                    </li>
+                </ul>
+            </section>
+            
+            <section class="class">
+                <header>
+                    <h2 id="Crafty">Crafty —</h2>
+
+                    <section class="description">
+                        A CraftyJS instance.
+                    </section>
+                </header>
+
+                <section class="functions">
+                    <section class="function">
+                        <header id="define">
+                            <h3><a href="#define"><code>define(label,
+                            callback)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Define code which will be executed on a
+                                specific Crafty network instance.<br>
+                                The <code>label</code> argument is used to
+                                determine if this code is to be run on this
+                                Crafty instance. Iff this instance's
+                                <code>label</code> starts with the given
+                                <code>label</code>, the <code>callback</code>
+                                is executed. This instance's <code>label</code>
+                                is specified on the client / server creation.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>label</code></td>
+
+                                        <td class="description">the label this
+                                        instance's label has to start with in
+                                        order for the callback to be
+                                        executed</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>callback</code></td>
+
+                                        <td class="description">the callback to
+                                        execute if this instance's label starts
+                                        with the given label</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class=
+"lang-js">// create an entity on the Crafty instance, whose label contains &quot;CLIENT&quot;
+Crafty.define(&quot;CLIENT&quot;, function() {
+    Crafty.e(&quot;2D, DOM, Text&quot;)
+          .attr({ x: 100, y: 100 })
+          .text(&quot;Loading, please stand by.&quot;); 
+});</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="netBind">
+                            <h3><a href="#netBind"><code>netBind(eventName,
+                            callback)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Binds to an event over the net. Other than that
+                                it is functionally the same as the <a href="http://craftyjs.com/api/Crafty%20Core.html#-bind">default bind method</a>.
+                                The events will be delivered to the Crafty
+                                instance(s) at the other end of the
+                                network.<br>
+                                If the event was triggered on the server
+                                instance, the event will be received on all
+                                client instances. If the event was triggered on
+                                a client instance, the event will be received
+                                on the server instance.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventName</code></td>
+
+                                        <td class="description">the event
+                                        name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>callback</code></td>
+
+                                        <td class="description">the callback to
+                                        execute upon event receipt</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">Crafty.netBind(&quot;GameOver&quot;, function(data) {
+    console.log(&quot;Congratulations, you achieved &quot; + data.score + &quot; points!&quot;);
+});</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="netTrigger">
+                            <h3><a href=
+                            "#netTrigger"><code>netTrigger(eventName,
+                            eventObject, isVolatile)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Triggers an event over the net. Other than that
+                                it is functionally the same as the <a href="http://craftyjs.com/api/Crafty%20Core.html#-trigger">default trigger method</a>.
+                                The events will be delivered to the Crafty
+                                instance(s) at the other end of the
+                                network.<br>
+                                If this is called on the server instance,
+                                triggers the event on all client instances. If
+                                this is called on the client instance, trigger
+                                the event on the server instance.<br>
+                                The <code>isVolatile</code> parameter specifies
+                                if the transmission should be guaranteed to be
+                                delivered to the other end or not. If set to
+                                <code>true</code>, the event can get lost over
+                                the network, but it increases the network
+                                performance (useful for transmitting events
+                                every frame, like position updates).
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventName</code></td>
+
+                                        <td class="description">the event
+                                        name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventObject</code></td>
+
+                                        <td class="description">the event
+                                        object</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>isVolatile</code></td>
+
+                                        <td class="description">whether the
+                                        event should be sent reliably or not;
+                                        if set to <code>true</code> the event
+                                        will not be sent reliably</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">Crafty.netTrigger(&quot;GameOver&quot;, {score: 11});
+Crafty.netTrigger(&quot;GameOver&quot;, {score: 11}, false); // equivalent to the above</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="netUnbind">
+                            <h3><a href="#netUnbind"><code>netUnbind(eventName,
+                            callback)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Unbinds from an event over the net. Other than
+                                that it is functionally the same as the <a href="http://craftyjs.com/api/Crafty%20Core.html#-unbind">default unbind method</a>.
+                                The events will be delivered to the Crafty
+                                instance(s) at the other end of the
+                                network.<br>
+                                If the event was triggered on the server
+                                instance, the event will be received on all
+                                client instances. If the event was triggered on
+                                a client instance, the event will be received
+                                on the server instance.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventName</code></td>
+
+                                        <td class="description">the event
+                                        name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>callback</code></td>
+
+                                        <td class="description">the callback to
+                                        execute upon event receipt</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var callback = function(data) {
+    console.log(&quot;Congratulations, you achieved &quot; + data.score + &quot; points!&quot;);
+};
+Crafty.netBind(&quot;GameOver&quot;, callback);
+Crafty.netUnbind(&quot;GameOver&quot;, callback);</code>
+</pre>
+                        </section>
+                    </section>
+                </section>
+            </section>
+
+            <section class="class">
+                <header>
+                    <h2 id="Net">Net —</h2>
+
+                    <section class="description">
+                        A Crafty component that
+                        adds net capabilities to Crafty entities.<br>
+                        It is necessary to add it to all entities that require
+                        net capabilities.<br>
+                        It is necessary to set an unique <a href="http://craftyjs.com/api/Crafty%20Core.html#-setName">entity name</a>
+                        when adding the component, which will be used to route
+                        events to correct entities on the other end of the
+                        network.
+                    </section>
+                </header>
+
+                <section class="functions"></section>
+            </section>
+
+            <section class="class">
+                <header>
+                    <h2 id="e">e —</h2>
+
+                    <section class="description">
+                        A CraftyJS entity.
+                    </section>
+                </header>
+
+                <section class="functions">
+                    <section class="function">
+                        <header id="define">
+                            <h3><a href="#define"><code>define(label,
+                            callback)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Define code which will be executed on a Crafty
+                                enity, depending on
+                                the Crafty instance it belongs to.<br>
+                                The <code>label</code> argument is used to
+                                determine if this code is to be run on this
+                                Crafty instance. Iff this instance's
+                                <code>label</code> starts with the given
+                                <code>label</code>, the <code>callback</code>
+                                is executed. This instance's <code>label</code>
+                                is specified on the client / server creation
+                                (see lib documentation).
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>label</code></td>
+
+                                        <td class="description">the label this
+                                        instance's label has to start with in
+                                        order for the callback to be
+                                        executed</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>callback</code></td>
+
+                                        <td class="description">the callback to
+                                        execute if this instance's label starts
+                                        with the given label</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty entity for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class=
+"lang-js">// Example showing definition of a basic entity, which is extended depending on the label of the Crafty instance it belongs to.
+//common features
+Crafty.e(&quot;2D, Net&quot;)
+      .setName(&quot;Player1&quot;)
+      .attr({ x: x, y: y, w: w, h: h })
+      //this will be defined on all CLIENTS (e.g. CLIENT1, CLIENT2, ...)
+      .define(&quot;CLIENT&quot;, function() {
+          this.addComponent(&quot;DOM, Color&quot;)
+              .color(&#x27;rgb(255,0,0)&#x27;);
+      })
+      //this will defined on CLIENT1 only
+      .define(&quot;CLIENT1&quot;, function() {
+          this.addComponent(&quot;Keyboard&quot;)
+              .netTrigger(&quot;KeyDown&quot;, ...);
+      })
+      //this will be defined on SERVER only
+      .define(&quot;SERVER&quot;, function() {
+          this.addComponent(&quot;Collision&quot;)
+              .onHit(&quot;Component&quot;, ...)
+      });</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="netBind">
+                            <h3><a href="#netBind"><code>netBind(eventName,
+                            callback)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Binds to an event over the net. Other than that
+                                it is functionally the same as the <a href="http://craftyjs.com/api/Crafty%20Core.html#-bind">default bind method</a>.
+                                The events are received at the Crafty
+                                entity with the
+                                same <a href="http://craftyjs.com/api/Crafty%20Core.html#-setName">entity name</a>
+                                as the triggering Crafty entity on the other end of the
+                                network.<br>
+                                If the event was triggered on a server entity,
+                                the event will be received on all client
+                                entities. If the event was triggered on a
+                                client entity, the event will be received on
+                                the server entity.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventName</code></td>
+
+                                        <td class="description">the event
+                                        name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>callback</code></td>
+
+                                        <td class="description">the callback to
+                                        execute upon event receipt</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty entity for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var ent = Crafty.e(&quot;Net&quot;)
+                .setName(&quot;MyEntity&quot;)
+                .netBind(&quot;Moved&quot;, function(data) {
+                    this.x = data.x;
+                    this.y = data.y;
+                });</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="netTrigger">
+                            <h3><a href=
+                            "#netTrigger"><code>netTrigger(eventName,
+                            eventObject, isVolatile)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Triggers an event over the net. Other than that
+                                it is functionally the same as the <a href="http://craftyjs.com/api/Crafty%20Core.html#-trigger">default trigger method</a>.
+                                The events will be delivered to the Crafty
+                                entity with the
+                                same <a href="http://craftyjs.com/api/Crafty%20Core.html#-setName">entity name</a>
+                                on the other end of the network, thus
+                                specifying an unique logical name for each
+                                entity is highly recommended.<br>
+                                If this is called on a server entity, triggers
+                                the event on all client entities. If this is
+                                called on a client entity, triggers the event
+                                on the server entitiy.<br>
+                                The <code>isVolatile</code> parameter specifies
+                                if the transmission should be guaranteed to be
+                                delivered to the other end or not. If set to
+                                <code>true</code>, the event can get lost over
+                                the network, but it increases the network
+                                performance (useful for transmitting events
+                                every frame, like position updates).
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventName</code></td>
+
+                                        <td class="description">the event
+                                        name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventObject</code></td>
+
+                                        <td class="description">the event
+                                        object</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>isVolatile</code></td>
+
+                                        <td class="description">whether the
+                                        event should be sent reliably or not;
+                                        if set to <code>true</code> the event
+                                        will not be sent reliably</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty entity for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var ent = Crafty.e(&quot;Net&quot;)
+                .setName(&quot;MyEntity&quot;)
+                .netTrigger(&quot;Moved&quot;, {x: this.x, y: this.y});</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="netUnbind">
+                            <h3><a href="#netUnbind"><code>netUnbind(eventName,
+                            callback)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Unbinds from an event over the net. Other than
+                                that it is functionally the same as the <a href="http://craftyjs.com/api/Crafty%20Core.html#-unbind">default unbind method</a>.
+                                The events are received at the Crafty
+                                entity with the
+                                same <a href="http://craftyjs.com/api/Crafty%20Core.html#-setName">entity name</a>
+                                as the triggering Crafty entity on the other end of the
+                                network.<br>
+                                If the event was triggered on a server entity,
+                                the event will be received on all client
+                                entities. If the event was triggered on a
+                                client entity, the event will be received on
+                                the server entity.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>eventName</code></td>
+
+                                        <td class="description">the event
+                                        name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>callback</code></td>
+
+                                        <td class="description">the callback to
+                                        execute upon event receipt</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                this Crafty entity for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var callback = function(data) {
+    this.x = data.x;
+    this.y = data.y;
+};
+var ent = Crafty.e(&quot;Net&quot;).setName(&quot;MyEntity&quot;);
+ent.netBind(&quot;Moved&quot;, callback);
+ent.netUnbind(&quot;Moved&quot;, callback);</code>
+</pre>
+                        </section>
+                    </section>
+                </section>
+            </section>
+
+            <section class="class">
+                <header>
+                    <h2 id="Client">Client —</h2>
+
+                    <section class="description">
+                        The Client API.<br>
+                        Can be constructed with this constructor or by calling
+                        the default setup method. After
+                        construction, various methods are available for
+                        creating a crafty client instance with net features and
+                        for connecting these net features to socket.io.<br>
+                        Also offers a static method for automatic matchmaking.
+                    </section>
+                </header>
+
+                <section class="functions">
+                    <section class="function">
+                        <header id="createInstance">
+                            <h3><a href=
+                            "#createInstance"><code>createInstance(label)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Construct a Crafty client instance with net
+                                features enabled.<br>
+                                The <code>label</code> is used to determine
+                                which code to execute.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>label</code></td>
+
+                                        <td class="description">the label to
+                                        use for this client instance</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                the newly created Crafty client instance with
+                                net features enabled
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class=
+"lang-js">var Client = require(&#x27;npm_crafty&#x27;)();
+var Crafty = Client.createInstance(&quot;CLIENT&quot;);</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="setServer">
+                            <h3><a href="#setServer"><code>setServer(Crafty,
+                            socket)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Bind the server <code>socket</code> to the
+                                Crafty client instance. The Crafty net features
+                                will use this <code>socket</code> to
+                                communicate with the server.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>Crafty</code></td>
+
+                                        <td class="description">the Crafty
+                                        client instance to bind the socket
+                                        to</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>socket</code></td>
+
+                                        <td class="description">the socket or
+                                        socket namespace to use for
+                                        communication with server</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                the Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class=
+"lang-js">var Client = require(&#x27;npm_crafty&#x27;)();
+var Crafty = Client.createInstance(&quot;CLIENT&quot;);
+Client.setServer(Crafty, socket);</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="setupDefault">
+                            <h3><a href=
+                            "#setupDefault"><code>setupDefault(immediateFN,
+                            connectFN, disconnectFN, serverAddress)</code></a>
+                            <span class=" label static">static</span></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Setup a default browser client, which will
+                                connect to the node server of the website
+                                automatically.<br>
+                                Each callback will be called at the appropriate
+                                times. Communication will be set to the default
+                                <code>'/'</code> namespace.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>immediateFN</code></td>
+
+                                        <td class="description">will be called
+                                        immediately once all libraries are
+                                        loaded</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>connectFN</code></td>
+
+                                        <td class="description">will be called
+                                        when the client connects to the
+                                        server</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>disconnectFN</code></td>
+
+                                        <td class="description">will be called
+                                        when the client disconnects from the
+                                        server</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>serverAddress</code></td>
+
+                                        <td class="description">the server
+                                        address to connect to (auto-resolved
+                                        usually and thus can be omitted
+                                        usually) e.g. "http://localhost"</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                - the ClientAPI object, which in addition to
+                                the available methods also contains the
+                                <code>io</code> property
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var Crafty;
+var Client = require(&#x27;npm_crafty&#x27;).setupDefault( function () { //immediate callback
+    Crafty = Client.createInstance(&quot;CLIENT&quot;);
+}, function (socket) { //connect callback
+    Client.setServer(Crafty, socket);
+}, function (socket) { //disconnect callback
+});</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="unsetServer">
+                            <h3><a href=
+                            "#unsetServer"><code>unsetServer(Crafty,
+                            socket)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Unbind the server <code>socket</code> from the
+                                Crafty client instance. The Crafty net features
+                                will no longer use this <code>socket</code> to
+                                communicate with the server.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>Crafty</code></td>
+
+                                        <td class="description">the Crafty
+                                        client instance to unbind the socket
+                                        from</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>socket</code></td>
+
+                                        <td class="description">the socket or
+                                        socket namespace to no longer use for
+                                        communication with server</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                the Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class=
+"lang-js">var Client = require(&#x27;npm_crafty&#x27;)();
+var Crafty = Client.createInstance(&quot;CLIENT&quot;);
+Client.setServer(Crafty, socket);
+Client.unsetServer(Crafty, socket);</code>
+</pre>
+                        </section>
+                    </section>
+                </section>
+            </section>
+
+            <section class="class">
+                <header>
+                    <h2 id="Server">Server —</h2>
+
+                    <section class="description">
+                        The Server API.<br>
+                        Can be constructed with this constructor or by calling
+                        the default setup method. After
+                        construction, various methods are available for
+                        creating a crafty server instance with net features and
+                        for connecting these net features to socket.io.<br>
+                        Also offers a static method for automatic matchmaking.<br>
+                        The <code>sockets</code> parameter contains the
+                        Socket.IO namespace to use for all Crafty related data.
+                    </section>
+                </header>
+
+                <section class="functions">
+                    <section class="function">
+                        <header id="addClient">
+                            <h3><a href="#addClient"><code>addClient(Crafty,
+                            socket)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Add a client <code>socket</code> to the Crafty
+                                server instance. The Crafty net features will
+                                use this <code>socket</code> to communicate
+                                with the client.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>Crafty</code></td>
+
+                                        <td class="description">the Crafty
+                                        server instance to bind the socket
+                                        to</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>socket</code></td>
+
+                                        <td class="description">the socket to
+                                        use for communication with a
+                                        client</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                the Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var Server = require(&#x27;npm_crafty&#x27;)(io.sockets);
+var Crafty = Server.createInstance(&quot;Room1&quot;);
+Server.addClient(Crafty, socket);</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="createInstance">
+                            <h3><a href=
+                            "#createInstance"><code>createInstance(room)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Construct a Crafty server instance with net
+                                features enabled.<br>
+                                Each server instance shall have an unique
+                                <code>room</code> name. Only client and server
+                                instances within the same <code>room</code> can
+                                talk to each other.<br>
+                                This method also set's the server instance's
+                                label to <code>"SERVER"</code>.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name"><code>room</code></td>
+
+                                        <td class="description">the room to use
+                                        for this server instance</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                the newly created crafty client instance with
+                                net features enabled
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var Server = require(&#x27;npm_crafty&#x27;)(io.sockets);
+var Crafty = Server.createInstance(&quot;Room1&quot;);</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="removeClient">
+                            <h3><a href=
+                            "#removeClient"><code>removeClient(Crafty,
+                            socket)</code></a></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Remove a client <code>socket</code> from the
+                                Crafty server instance. The Crafty net features
+                                will no longer use this <code>socket</code> to
+                                communicate with the client.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>Crafty</code></td>
+
+                                        <td class="description">the Crafty
+                                        server instance to unbind the socket
+                                        from</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>socket</code></td>
+
+                                        <td class="description">the socket to
+                                        no longer use for communication with a
+                                        client</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                the Crafty instance for method chaining
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var Server = require(&#x27;npm_crafty&#x27;)(io.sockets);
+var Crafty = Server.createInstance(&quot;Room1&quot;);
+Server.addClient(Crafty, socket);
+Server.removeClient(Crafty, socket);</code>
+</pre>
+                        </section>
+                    </section>
+
+                    <section class="function">
+                        <header id="setupDefault">
+                            <h3><a href=
+                            "#setupDefault"><code>setupDefault(immediateFN,
+                            connectFN, disconnectFN, port)</code></a>
+                            <span class=" label static">static</span></h3>
+                        </header>
+
+                        <p class="summary"></p>
+
+                        <section class="description">
+                            <h4>Discussion</h4>
+
+                            <div>
+                                Setup a default node server, which will serve
+                                npm_crafty's required files (it will reply to
+                                GET requests).<br>
+                                Each callback will be called at the appropriate
+                                times. Communication will be set to the default
+                                <code>'/'</code> namespace.
+                            </div>
+                        </section>
+
+                        <section class="params">
+                            <h4>Parameters</h4>
+
+                            <table class=
+                            "table table-bordered table-condensed">
+                                <tbody>
+                                    <tr>
+                                        <td class="name">
+                                        <code>immediateFN</code></td>
+
+                                        <td class="description">will be called
+                                        immediately once all libraries are
+                                        loaded</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>connectFN</code></td>
+
+                                        <td class="description">will be called
+                                        when a client connects to the
+                                        server</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name">
+                                        <code>disconnectFN</code></td>
+
+                                        <td class="description">will be called
+                                        when a client disconnects from the
+                                        server</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="name"><code>port</code></td>
+
+                                        <td class="description">the port to use
+                                        (defaults to
+                                        <code>process.env.PORT</code>; falls
+                                        back to standard HTTP port
+                                        <code>80</code>)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <section class="returns">
+                            <h4>Return Value</h4>
+
+                            <div>
+                                - the ServerAPI object, which in addition to
+                                the available methods also contains the
+                                <code>app</code>, <code>server</code> and
+                                <code>io</code> property
+                            </div>
+                        </section>
+
+                        <section class="example">
+                            <h4>Example</h4>
+                            <pre>
+<code class="lang-js">var Crafty;
+var Server = require(&#x27;npm_crafty&#x27;).setupDefault( function () { //immediate callback
+    Crafty = Server.createInstance(&quot;Room1&quot;);
+}, function (socket) { //connect callback
+    Server.addClient(Crafty, socket);
+}, function (socket) { //disconnect callback
+});</code>
+</pre>
+                        </section>
+                    </section>
+                </section>
+            </section>
+        </section>
+    </div>
+</body>
+</html>
