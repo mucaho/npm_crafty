@@ -1,12 +1,15 @@
 {
 	"version":"0.5.3-8",
 	"name":"npm_crafty",
-	"description":"A server version of craftyJS. It allows multiple server-client(s) sessions.",
+	"description":"Networking for [Crafty](https://github.com/craftyjs/Crafty), a JavaScript game engine. It allows multiple server-client(s) sessions.",
 	"keywords":[
-		"crafty",
-		"craftyJS",
-		"npm",
-		"server"
+		"Crafty",
+		"CraftyJS",
+		"server",
+		"client",
+		"multiplayer",
+		"network",
+		"net"
 	],
 	"homepage":"https://github.com/mucaho/npm_crafty",
 	"repository":{
@@ -45,7 +48,8 @@
 		"socket.io":"0.9.x", 
 		"express":"3.x",
 		"browserify-middleware":"5.x.x",
-		"node-uuid":"1.x.x"
+		"node-uuid":"1.x.x",
+		"craftyjs": "0.7.0"
 	},
 	"devDependencies": {
 		"jsdoc":"",

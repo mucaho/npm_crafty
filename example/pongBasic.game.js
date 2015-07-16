@@ -180,9 +180,8 @@ exports.startGame = function(Crafty) {
 				.define("CLIENT", function() {
 					this.addComponent("DOM, Color")
 						.color('rgb(255,0,0)')
-						.netBind('Moved', function(newPos) {
-							this.x = newPos.x;
-							this.y = newPos.y;
+						.netBind('Moved', function(evt) {
+							this[evt.axis] = evt.oldValue;
 						});
 				})
 		},
@@ -205,7 +204,7 @@ exports.startGame = function(Crafty) {
 					keyBinds[downKey] = 90;
 					
 					this.addComponent("Multiway, Collidable")
-						.multiway(4, keyBinds)
+						.multiway(200, keyBinds)
 						.collidable(TYPE_PADDLE, null)
 						.netBind("KeyDown", function(e) {
 							this.trigger("KeyDown", e);
