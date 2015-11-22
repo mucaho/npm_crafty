@@ -20,8 +20,6 @@ The unmodified crafty version runs on the client (== __browser__). A heavily mod
 (== __nodejs__, drawing stuff and similar is omitted from the server version).   
 Both client and server version have additional features available for defining the game code on server or client, 
 as well as enabling communication between them.   
-These differences between original crafty library and the modified libraries can be seen inside the 
-__diff__ folder.  
 __You have to alter your game code to include these features.__
 
 In order for the communication to work between server and client(s) you also have to specify how connecting / disconnecting
