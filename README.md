@@ -1,9 +1,8 @@
 [![NPM](https://nodei.co/npm/npm_crafty.png?compact=true)](https://nodei.co/npm/npm_crafty/)
 
-npm_crafty
-==========
+# npm_crafty
 
-This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craftyJS](http://craftyjs.com/).
+This is a [node](http://nodejs.org/) module. It adds networking capabilities to [Crafty](http://craftyjs.com/), a JavaScript game engine.
 
 **npm_crafty** adds a logical overlay network on-top of **crafty**   
 * You can create multiple __rooms__. Each room contains __one server__ and __multiple clients__.   
@@ -13,12 +12,10 @@ This is a [nodeJS](http://nodejs.org/) module. It runs a server version of [craf
 
 _Go multiplayer today with a minimalistic and easy-to-use net api!_
 
-# Version
-----------
-Current native crafty version is 0.5.3
+## Version
+Current native crafty version is 0.7.0
 
-# Overview
-----------
+## Overview
 The unmodified crafty version runs on the client (== __browser__). A heavily modified version runs on the server 
 (== __nodejs__, drawing stuff and similar is omitted from the server version).   
 Both client and server version have additional features available for defining the game code on server or client, 
@@ -36,15 +33,12 @@ __You have to setup game room(s) so that each server instance knows with which c
 
 An example can be found inside the __example__ folder.
 
-# Documentation
----------------
+## Documentation
 See the [npm_crafty io page](http://mucaho.github.io/npm_crafty/).
 
-# Misc
-------
+## Misc
 If you have a __suggestion or bug report__, open an __issue__. 
 If you want to __contribute__, open a __pull request__.
 
-# License
--------------
+## License
 __The MIT License (MIT)__ (See LICENSE)
