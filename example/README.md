@@ -1,5 +1,4 @@
 # Example
----------
 Note that in all examples the path to **npm_crafty** module is specified relative to the example folder.
 When you install the module you have to `var npm_crafty = require('npm_crafty');`
 
@@ -7,7 +6,6 @@ Run the server with `node exampleName.server.js` (from the appropriate working d
 Run the client by opening the url `localhost` with your browser (the browser will load the _html_ file).
 
 ## Simple
-=========
 This example shows you basic usage of npm_crafty for creating one client-server room.   
 The server initiates an event on client connect. The client logs the event and replies back to the server. 
 The server logs the event.
@@ -85,7 +83,6 @@ var Server = npm_crafty.setupDefault( function () { //immediate callback
 
 
 ## PongBasic
-============
 This is an adaptation of a [basic pong game](http://craftyjs.com/tutorial/getting-started/how-crafty-works#a_simple_game_of_pong).   
 Open __localhost__ in the browser, then open __localhost__ again in a new browser tab. A game room will be created for every two players that join, so you can open/close more tabs and additional game rooms will be setup and toredown accordingly.   
 CLIENT1 controls the paddle with __W & S__, CLIENT2 with __UP & DOWN__.
